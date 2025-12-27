@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/layout.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="formGestao">
+			<p:messages id="msgs" closable="true">
+				<p:autoUpdate />
+			</p:messages>
+
+			<p:toolbar style="margin-bottom: 20px;">
+				<f:facet name="left">
+					<p:commandButton value="Novo Paciente"
+						action="#{pacienteBean.novoPaciente}" icon="pi pi-user-plus"
+						ajax="false" />
+				</f:facet>
+
+				<f:facet name="right">
+					<p:commandButton value="Sair do Módulo" action="irParaHome"
+						icon="pi pi-home" ajax="false" styleClass="ui-button-secondary"
+						immediate="true" />
+				</f:facet>
+			</p:toolbar>
+
+			<p:dataTable id="tabela" value="#{pacienteBean.listaPacientes}"
+				var="p" emptyMessage="Nenhum registro encontrado." rows="10"
+				paginator="true" paginatorPosition="bottom" rowHover="true">
+
+				<f:facet name="header">
+                    Gestão de Pacientes
+                </f:facet>
+
+				<p:column headerText="Nome" sortBy="#{p.nome}" filterBy="#{p.nome}"
+					filterMatchMode="contains">
+					<h:outputText value="#{p.nome}" />
+				</p:column>
+
+				<p:column headerText="Profissão">
+					<h:outputText value="#{p.profissao}" />
+				</p:column>
+
+				<p:column headerText="Data de Nascimento"
+					style="text-align: center; width: 150px;">
+					<h:outputText value="#{p.dataNascimento}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Ações"
+					style="width: 100px; text-align: center;">
+					<p:commandButton icon="pi pi-pencil"
+						action="#{pacienteBean.editar(p)}" process="@this"
+						styleClass="ui-button-success rounded-button" ajax="false"
+						title="Editar Paciente" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>

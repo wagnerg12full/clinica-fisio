@@ -26,9 +26,12 @@ public class PacienteBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		// Carrega a lista assim que o usuário entra no fluxo de pacientes
-		this.listaPacientes = pacienteService.listarTodos();
+		
 	}
+	
+	public void consultar() {
+        this.listaPacientes = pacienteService.listarTodos();
+    }
 
 	/**
 	 * Salva o paciente e encerra o fluxo, retornando para a Home.
@@ -60,6 +63,7 @@ public class PacienteBean implements Serializable {
 	 * Método para limpar o objeto e ir para o formulário de novo paciente.
 	 */
 	public String novoPaciente() {
+		this.listaPacientes = List.of();
 		this.paciente = new Paciente();
 		return "pacientes"; // ID do view-node no paciente-flow.xml
 	}

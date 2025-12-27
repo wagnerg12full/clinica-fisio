@@ -6,12 +6,13 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 <h:head>
-	<title>Clínica de Fisioterapia</title>
+	<title>Clínica Fisio</title>
 	<h:outputStylesheet name="css/estilo.css" />
 	<style>
 body {
 	margin: 0;
 	font-family: Arial, sans-serif;
+	overflow: hidden;
 }
 
 .wrapper {
@@ -20,28 +21,48 @@ body {
 	height: 100vh;
 }
 
+/* Toolbar fixa no topo */
+.header {
+	background: #007ad9 !important;
+	color: white !important;
+	border: none !important;
+}
+
 .main-content {
 	display: flex;
 	flex: 1;
 	overflow: hidden;
 }
 
+/* Estilo do Menu Lateral com transição suave */
 .menu-lateral {
 	width: 250px;
 	border-right: 1px solid #ccc;
 	background: #f8f9fa;
-	padding: 10px;
+	transition: all 0.3s ease;
+	overflow-x: hidden;
+	white-space: nowrap;
+}
+
+/* Classe para quando o menu estiver recolhido */
+.menu-recolhido {
+	width: 0px;
+	border-right: none;
+	padding: 0;
 }
 
 .conteudo-central {
 	flex: 1;
 	padding: 20px;
 	overflow-y: auto;
+	background: #fff;
 }
 
-.header {
-	background: #007ad9;
-	color: white;
+/* Ajuste para os ícones do toolbar */
+.ui-toolbar-group-left {
+	display: flex;
+	align-items: center;
+	gap: 10px;
 }
 </style>
 </h:head>
@@ -51,9 +72,15 @@ body {
 		<h:form id="headerForm">
 			<p:toolbar styleClass="header">
 				<f:facet name="left">
-					<h:outputText value="Sistema Clínica - Fortaleza/CE"
+					<p:commandLink action="#{templateBean.toggleMenu}" ajax="false"
+						update=":layoutGroup" style="color: white; margin-right: 10px;">
+						<i class="pi pi-bars" style="font-size: 1.5rem;"></i>
+					</p:commandLink>
+
+					<h:outputText value="Clinica Fisio"
 						style="font-weight: bold; font-size: 1.2em; color:white;" />
 				</f:facet>
+
 				<f:facet name="right">
 					<p:commandButton value="Sair" action="#{loginBean.logout}"
 						icon="pi pi-power-off" ajax="false" />
@@ -61,10 +88,14 @@ body {
 			</p:toolbar>
 		</h:form>
 
-		<div class="main-content">
-			<aside class="menu-lateral">
+		<h:panelGroup id="layoutGroup" layout="block"
+			styleClass="main-content">
+
+			<aside
+				class="menu-lateral #{templateBean.menuRecolhido ? 'menu-recolhido' : ''}">
 				<h:form id="menuForm">
-					<p:panelMenu style="width:100%">
+					<p:panelMenu style="width:100%"
+						rendered="#{!templateBean.menuRecolhido}">
 						<p:submenu label="Navegação">
 							<p:menuitem value="Início (Home)" action="irParaHome"
 								icon="pi pi-home" ajax="false" />
@@ -82,7 +113,7 @@ body {
 					<h:outputText value="Selecione uma opção no menu." />
 				</ui:insert>
 			</main>
-		</div>
+		</h:panelGroup>
 	</div>
 </h:body>
 </html>

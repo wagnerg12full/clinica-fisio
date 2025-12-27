@@ -30,6 +30,8 @@ public class LoginBean implements Serializable {
 	 * Realiza a autenticação. O sufixo ?faces-redirect=true instrui o JSF a enviar
 	 * um HTTP 302, mudando a URL no navegador e evitando o erro de "URL presa".
 	 * 
+	 * psql -h ip_servidor -p 5432 -U postgres -d clinicafisio
+	 * 
 	 * insert into usuario values ( 1, current_timestamp, true, true, 'admin',
 	 * 'admin');
 	 */

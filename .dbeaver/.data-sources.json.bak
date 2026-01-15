@@ -4,14 +4,14 @@
 		"postgres-jdbc-19b5bccabb7-152d68e982e633e7": {
 			"provider": "postgresql",
 			"driver": "postgres-jdbc",
-			"name": "dbentradamoradia",
+			"name": "ClinicaFisio",
 			"save-password": true,
 			"read-only": false,
 			"configuration": {
-				"host": "192.168.1.26",
+				"host": "192.168.1.31",
 				"port": "5432",
-				"database": "dbentradamoradia",
-				"url": "jdbc:postgresql://192.168.1.26:5432/dbentradamoradia",
+				"database": "clinicafisio",
+				"url": "jdbc:postgresql://192.168.1.31:5432/clinicafisio",
 				"type": "dev",
 				"provider-properties": {
 					"@dbeaver-show-non-default-db@": "false",

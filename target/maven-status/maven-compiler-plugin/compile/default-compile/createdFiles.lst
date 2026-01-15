@@ -1,9 +1,12 @@
-com/clinica/controller/HomeBean.class
 com/clinica/controller/LoginBean.class
-com/clinica/filter/AutorizacaoFilter.class
-com/clinica/model/Usuario.class
 com/clinica/service/usuario/UsuarioService.class
-com/clinica/controller/TemplateBean.class
 com/clinica/service/paciente/PacienteService.class
 com/clinica/controller/PacienteBean.class
+com/clinica/controller/HomeBean.class
+com/clinica/filter/AutorizacaoFilter.class
+com/clinica/messaging/EmailMDB.class
+com/clinica/model/Usuario.class
+com/clinica/scheduler/AniversarioScheduler.class
+com/clinica/controller/TemplateBean.class
+com/clinica/service/email/EmailService.class
 com/clinica/model/Paciente.class

@@ -23,6 +23,31 @@
 					"postgresql.dd.plain.string": "false",
 					"postgresql.dd.tag.string": "false"
 				},
+				"auth-model": "native"
+			}
+		},
+		"postgres-jdbc-19bb25d3b6a-1f0de420a50fbd3b": {
+			"provider": "postgresql",
+			"driver": "postgres-jdbc",
+			"name": "ClinicaFisio DEV",
+			"save-password": true,
+			"read-only": false,
+			"configuration": {
+				"host": "192.168.1.26",
+				"port": "5432",
+				"database": "dbentradamoradia",
+				"url": "jdbc:postgresql://192.168.1.26:5432/dbentradamoradia",
+				"type": "dev",
+				"provider-properties": {
+					"@dbeaver-show-non-default-db@": "false",
+					"@dbeaver-show-template-db@": "false",
+					"@dbeaver-show-unavailable-db@": "false",
+					"show-database-statistics": "false",
+					"@dbeaver-read-all-data-types-db@": "false",
+					"@dbeaver-use-prepared-statements-db@": "false",
+					"postgresql.dd.plain.string": "false",
+					"postgresql.dd.tag.string": "false"
+				},
 				"auth-model": "native",
 				"handlers": {}
 			}

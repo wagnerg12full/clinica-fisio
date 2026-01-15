@@ -2,6 +2,7 @@ package com.clinica.model;
 
 import java.io.Serializable;
 import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,6 +24,9 @@ public class Paciente implements Serializable {
 
 	@Column(nullable = false, length = 150)
 	private String nome;
+
+	@Column(nullable = false, length = 255)
+	private String email;
 
 	@Temporal(TemporalType.DATE)
 	@Column(name = "data_nascimento")
@@ -55,6 +59,14 @@ public class Paciente implements Serializable {
 
 	public void setNome(String nome) {
 		this.nome = nome;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public Date getDataNascimento() {

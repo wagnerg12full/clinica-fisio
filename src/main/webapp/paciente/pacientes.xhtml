@@ -23,6 +23,14 @@
 						<p:inputText id="nome" value="#{pacienteBean.paciente.nome}"
 							required="true" requiredMessage="O nome é obrigatório." />
 
+						<p:outputLabel for="email" value="E-mail:" />
+						<p:inputText id="email" value="#{pacienteBean.paciente.email}"
+							required="true"
+							requiredMessage="O e-mail é obrigatório para notificações.">
+							<f:validateRegex
+								pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+						</p:inputText>
+
 						<p:outputLabel for="dataNasc" value="Data de Nascimento:" />
 						<p:calendar id="dataNasc"
 							value="#{pacienteBean.paciente.dataNascimento}"

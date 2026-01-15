@@ -1,1 +1,1 @@
-{"resources":{"Scripts/Script.sql":{"sql-editor-data-source-id":"postgres-jdbc-19b5bccabb7-152d68e982e633e7","default-datasource":"postgres-jdbc-19b5bccabb7-152d68e982e633e7","default-catalog":"dbentradamoradia","default-schema":"public"}}}
+{"resources":{"Scripts/Script.sql":{"sql-editor-data-source-id":"postgres-jdbc-19b5bccabb7-152d68e982e633e7","default-datasource":"postgres-jdbc-19b5bccabb7-152d68e982e633e7","default-catalog":"clinicafisio","default-schema":"public"}}}

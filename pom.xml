@@ -54,6 +54,20 @@
 			<artifactId>postgresql</artifactId>
 			<version>42.7.8</version>
 		</dependency>
+
+		<dependency>
+			<groupId>jakarta.resource</groupId>
+			<artifactId>jakarta.resource-api</artifactId>
+			<version>1.7.4</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.ejb3</groupId>
+			<artifactId>jboss-ejb3-ext-api</artifactId>
+			<version>2.1.0</version> <!-- Or a newer/different version like 2.4.0.Final -->
+		</dependency>
+
 	</dependencies>
 
 	<build>

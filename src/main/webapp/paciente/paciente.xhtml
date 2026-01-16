@@ -62,6 +62,11 @@
 						action="#{pacienteBean.editar(p)}" process="@this"
 						styleClass="ui-button-success rounded-button" ajax="false"
 						title="Editar Paciente" />
+					<p:commandButton icon="pi pi-file-edit"
+						action="#{pacienteBean.iniciarAvaliacao(p)}"
+						styleClass="ui-button-warning rounded-button" ajax="false"
+						title="Avaliar Paciente">
+					</p:commandButton>
 				</p:column>
 			</p:dataTable>
 		</h:form>

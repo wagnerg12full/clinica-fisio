@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/layout.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="formListagem">
+			<p:panel header="Histórico de Avaliações">
+
+				<p:toolbar style="margin-bottom: 20px;">
+					<f:facet name="left">
+						<div class="ui-inputgroup">
+							<p:outputLabel for="filtro" value="Paciente: "
+								style="margin-right: 10px; align-self: center;" />
+							<p:inputText id="filtro"
+								value="#{avaliacaoBean.filtroNomePaciente}"
+								placeholder="Nome do paciente..." style="width: 300px;" />
+							<p:commandButton action="#{avaliacaoBean.pesquisar}"
+								icon="pi pi-search" ajax="false"
+								styleClass="ui-button-warning" />
+						</div>
+					</f:facet>
+
+					<f:facet name="right">
+						<p:commandButton value="Nova Avaliação" action="avaliacoes"
+							icon="pi pi-plus" ajax="false" styleClass="ui-button-success"
+							style="margin-right: 5px;" />
+
+						<p:commandButton value="Sair do Módulo" action="irParaHome"
+							icon="pi pi-home" ajax="false" styleClass="ui-button-secondary" />
+					</f:facet>
+				</p:toolbar>
+
+				<p:spacer height="20" />
+
+				<p:dataTable id="tabelaAvaliacoes"
+					value="#{avaliacaoBean.listaAvaliacoes}" var="ficha"
+					emptyMessage="Nenhuma avaliação encontrada." rows="10"
+					paginator="true" paginatorPosition="bottom"
+					styleClass="products-table">
+
+					<p:column headerText="Data" sortBy="#{ficha.dataAvaliacao}"
+						style="width: 15%; text-align: center;">
+						<h:outputText value="#{ficha.dataAvaliacao}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Paciente" sortBy="#{ficha.paciente.nome}">
+						<h:outputText value="#{ficha.paciente.nome}" />
+					</p:column>
+
+					<p:column headerText="Escala de Dor"
+						style="width: 12%; text-align: center;">
+						<p:tag value="#{ficha.escalaDor}"
+							severity="#{ficha.escalaDor le 2 ? 'success' : (ficha.escalaDor le 7 ? 'warning' : 'danger')}" />
+					</p:column>
+
+					<p:column headerText="Ações"
+						style="width: 10%; text-align: center;">
+						<p:commandButton icon="pi pi-pencil" title="Editar"
+							action="avaliacoes" ajax="false"
+							styleClass="ui-button-rounded ui-button-flat">
+							<f:setPropertyActionListener value="#{ficha}"
+								target="#{avaliacaoBean.avaliacao}" />
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -26,12 +26,12 @@ public class PacienteBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		
+
 	}
-	
+
 	public void consultar() {
-        this.listaPacientes = pacienteService.listarTodos();
-    }
+		this.listaPacientes = pacienteService.listarTodos();
+	}
 
 	/**
 	 * Salva o paciente e encerra o fluxo, retornando para a Home.
@@ -56,16 +56,18 @@ public class PacienteBean implements Serializable {
 	 */
 	public String editar(Paciente p) {
 		this.paciente = p;
-		return "pacientes"; // ID do view-node no paciente-flow.xml
+		return "pacientes";
 	}
 
-	/**
-	 * Método para limpar o objeto e ir para o formulário de novo paciente.
-	 */
 	public String novoPaciente() {
 		this.listaPacientes = List.of();
 		this.paciente = new Paciente();
-		return "pacientes"; // ID do view-node no paciente-flow.xml
+		return "pacientes";
+	}
+
+	public String iniciarAvaliacao(Paciente p) {
+		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("pacienteParaAvaliacao", p);
+		return "avaliacao";
 	}
 
 	// --- Getters e Setters ---

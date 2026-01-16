@@ -1,0 +1,344 @@
+Vamos agora criar um requisito funcional chamado "Avaliar Paciente".
+
+Deve ser criada uma entidade chamada Ficha de Avaliação. 
+
+Ela deve possuir as seguintes informações: 
+
+1. O Paciente;
+2. Histórico Atual (HDA): texto até 1000 caracteres;
+3. Procurou médico ortopedista? veradeiro ou falso;
+4. Diagnóstico médico: texto até 1000 caracteres;
+5. Exames de imagem: texto até 1000 caracteres;
+6. Testes físicos: texto até 1000 caracteres;
+7. Testes de força: texto até 1000 caracteres;
+8. Palpação: tipo enumerado (NORMAL, EDEMA, CICATRICAZAO_INCOMPLETA, ERITEMA, OUTROS);
+9. Escala de dor: de 0 até 10;
+10. Data da avaliação.
+
+IMPORTANTE
+1. Somente o paciente e a data de avaliação são obrigatórios;
+2. O campo Paciente deve buscar a entidade paciente pelo nome, como um autocompletar ; veja o que o PrimeFaces tem de melhor para atender a isso;
+3. Para o campo 9, a escala de dor é a seguinte: de 0 até 2 é LEVE; de 3 até 7 é MODERADA; de 8 até 10 é INTENSA. Pense em algo como uma régua. O usuário arrasta o mouse horizontalmente até o número desejado em uma regua, mantendo a descrição da escala de dor uma linha acima dos números. Veja o que o PrimeFaces tem de melhor para atender a isso; acredito que um slider seja uma boa opção.
+4. O campo 10 é de preenchimento automático , data e hora atuais;
+5. O usuário pode incluir, alterar ou excluir uma avaliação.
+
+Pode ser que , devido ao tamanho de alguns campos, o cadastro fique muito grande e precise rolar a página. Se isso acontecer, verique a possibilidade de quebrar em abas. 
+
+
+Abaixo, lembrar a você como está atualmente o cadastro de pacientes. Vai ser util para voce seguir o padrão.
+
+####### paciente.xhtml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/layout.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="formGestao">
+			<p:messages id="msgs" closable="true">
+				<p:autoUpdate />
+			</p:messages>
+
+			<p:toolbar style="margin-bottom: 20px;">
+				<f:facet name="left">
+					<p:commandButton value="Consultar"
+						action="#{pacienteBean.consultar}" icon="pi pi-search"
+						ajax="false" styleClass="ui-button-info"
+						style="margin-right: 10px;" />
+
+					<p:commandButton value="Novo Paciente"
+						action="#{pacienteBean.novoPaciente}" icon="pi pi-user-plus"
+						ajax="false" styleClass="ui-button-success" />
+				</f:facet>
+
+				<f:facet name="right">
+					<p:commandButton value="Sair do Módulo" action="irParaHome"
+						icon="pi pi-home" ajax="false" styleClass="ui-button-secondary"
+						immediate="true" />
+				</f:facet>
+			</p:toolbar>
+
+			<p:dataTable id="tabela" value="#{pacienteBean.listaPacientes}"
+				var="p" emptyMessage="Clique em Consultar para exibir os pacientes."
+				rows="10" paginator="true" paginatorPosition="bottom"
+				rowHover="true">
+
+				<f:facet name="header">
+                    Gestão de Pacientes
+                </f:facet>
+
+				<p:column headerText="Nome" sortBy="#{p.nome}" filterBy="#{p.nome}"
+					filterMatchMode="contains">
+					<h:outputText value="#{p.nome}" />
+				</p:column>
+
+				<p:column headerText="Profissão">
+					<h:outputText value="#{p.profissao}" />
+				</p:column>
+
+				<p:column headerText="Data de Nascimento"
+					style="text-align: center; width: 150px;">
+					<h:outputText value="#{p.dataNascimento}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputText>
+				</p:column>
+
+				<p:column headerText="Ações"
+					style="width: 100px; text-align: center;">
+					<p:commandButton icon="pi pi-pencil"
+						action="#{pacienteBean.editar(p)}" process="@this"
+						styleClass="ui-button-success rounded-button" ajax="false"
+						title="Editar Paciente" />
+				</p:column>
+			</p:dataTable>
+		</h:form>
+	</ui:define>
+</ui:composition>
+
+####### pacientes.xhtml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/layout.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="formCadastro">
+			<p:messages id="messages" closable="true">
+				<p:autoUpdate />
+			</p:messages>
+
+			<p:panel
+				header="#{pacienteBean.paciente.id == null ? 'Novo Cadastro' : 'Edição de Paciente'}">
+				<div class="ui-fluid">
+					<p:panelGrid columns="2" layout="grid"
+						columnClasses="ui-grid-col-2, ui-grid-col-10"
+						styleClass="ui-panelgrid-blank">
+
+						<p:outputLabel for="nome" value="Nome Completo:" />
+						<p:inputText id="nome" value="#{pacienteBean.paciente.nome}"
+							required="true" requiredMessage="O nome é obrigatório." />
+
+						<p:outputLabel for="email" value="E-mail:" />
+						<p:inputText id="email" value="#{pacienteBean.paciente.email}"
+							required="true"
+							requiredMessage="O e-mail é obrigatório para notificações.">
+							<f:validateRegex
+								pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+						</p:inputText>
+
+						<p:outputLabel for="dataNasc" value="Data de Nascimento:" />
+						<p:calendar id="dataNasc"
+							value="#{pacienteBean.paciente.dataNascimento}"
+							pattern="dd/MM/yyyy" mask="true" navigator="true" />
+
+						<p:outputLabel for="endereco" value="Endereço:" />
+						<p:inputText id="endereco"
+							value="#{pacienteBean.paciente.endereco}" />
+
+						<p:outputLabel for="profissao" value="Profissão:" />
+						<p:inputText id="profissao"
+							value="#{pacienteBean.paciente.profissao}" />
+
+						<p:outputLabel for="queixa" value="Queixa Principal:" />
+						<h:panelGroup>
+							<p:inputTextarea id="queixa"
+								value="#{pacienteBean.paciente.queixaPrincipal}" rows="8"
+								maxlength="4000" counter="display"
+								counterTemplate="{0} caracteres restantes." autoResize="false"
+								required="true"
+								requiredMessage="A queixa principal é obrigatória." />
+							<br />
+							<h:outputText id="display" style="font-size: 0.8em; color: #666;" />
+						</h:panelGroup>
+					</p:panelGrid>
+				</div>
+
+				<f:facet name="footer">
+					<p:commandButton value="Confirmar e Salvar"
+						action="#{pacienteBean.salvar}" icon="pi pi-check" ajax="false"
+						styleClass="ui-button-primary" style="width: auto;" />
+
+					<p:spacer width="10" />
+
+					<p:commandButton value="Cancelar / Voltar" action="paciente"
+						ajax="false" immediate="true" icon="pi pi-times"
+						styleClass="ui-button-secondary" />
+				</f:facet>
+			</p:panel>
+		</h:form>
+	</ui:define>
+
+</ui:composition>
+
+
+####### paciente-flow.xml
+
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2"
+              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+
+    <flow-definition id="paciente">
+        
+        <start-node>paciente</start-node>
+
+        <view-node id="paciente">
+            <vdl-document>/paciente/paciente.xhtml</vdl-document>
+        </view-node>
+
+        <view-node id="pacientes">
+            <vdl-document>/paciente/pacientes.xhtml</vdl-document>
+        </view-node>
+
+        <flow-return id="finalizarPaciente">
+            <from-outcome>/home.xhtml</from-outcome>
+        </flow-return>
+
+    </flow-definition>
+</faces-config>
+
+
+
+Estão em src/main/webapp/paciente. 
+
+Assim, deverá ser criada uma pasta chamada src/main/webapp/avaliacao.
+
+Dentro do pacote com.clinica existem os pacotes controller, service e model, onde devem ser colocadas as classes de forma apropriada. No caso de service , deve existir o pacote avaliacao, onde a classe service deve ficar (AvaliacaoService).
+
+Você deve ter esquecido.... mas está o arquivo de layout.xhtml , onde fica o template da aplicação:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Clínica Fisio</title>
+	<h:outputStylesheet name="css/estilo.css" />
+	<style>
+body {
+	margin: 0;
+	font-family: Arial, sans-serif;
+	overflow: hidden;
+}
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+}
+
+/* Toolbar fixa no topo */
+.header {
+	background: #007ad9 !important;
+	color: white !important;
+	border: none !important;
+}
+
+.main-content {
+	display: flex;
+	flex: 1;
+	overflow: hidden;
+}
+
+/* Estilo do Menu Lateral com transição suave */
+.menu-lateral {
+	width: 250px;
+	border-right: 1px solid #ccc;
+	background: #f8f9fa;
+	transition: all 0.3s ease;
+	overflow-x: hidden;
+	white-space: nowrap;
+}
+
+/* Classe para quando o menu estiver recolhido */
+.menu-recolhido {
+	width: 0px;
+	border-right: none;
+	padding: 0;
+}
+
+.conteudo-central {
+	flex: 1;
+	padding: 20px;
+	overflow-y: auto;
+	background: #fff;
+}
+
+/* Ajuste para os ícones do toolbar */
+.ui-toolbar-group-left {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+</style>
+</h:head>
+
+<h:body>
+	<div class="wrapper">
+		<h:form id="headerForm">
+			<p:toolbar styleClass="header">
+				<f:facet name="left">
+					<p:commandLink action="#{templateBean.toggleMenu}" ajax="false"
+						update=":layoutGroup" style="color: white; margin-right: 10px;">
+						<i class="pi pi-bars" style="font-size: 1.5rem;"></i>
+					</p:commandLink>
+
+					<h:outputText value="Clinica Fisio"
+						style="font-weight: bold; font-size: 1.2em; color:white;" />
+				</f:facet>
+
+				<f:facet name="right">
+					<p:commandButton value="Sair" action="#{loginBean.logout}"
+						icon="pi pi-power-off" ajax="false" />
+				</f:facet>
+			</p:toolbar>
+		</h:form>
+
+		<h:panelGroup id="layoutGroup" layout="block"
+			styleClass="main-content">
+
+			<aside
+				class="menu-lateral #{templateBean.menuRecolhido ? 'menu-recolhido' : ''}">
+				<h:form id="menuForm">
+					<p:panelMenu style="width:100%"
+						rendered="#{!templateBean.menuRecolhido}">
+						<p:submenu label="Navegação">
+							<p:menuitem value="Início (Home)" action="irParaHome"
+								icon="pi pi-home" ajax="false" />
+						</p:submenu>
+						<p:submenu label="Módulos">
+							<p:menuitem value="Pacientes" action="paciente"
+								icon="pi pi-users" ajax="false" />
+						</p:submenu>
+					</p:panelMenu>
+				</h:form>
+			</aside>
+
+			<main class="conteudo-central">
+				<ui:insert name="conteudo">
+					<h:outputText value="Selecione uma opção no menu." />
+				</ui:insert>
+			</main>
+		</h:panelGroup>
+	</div>
+</h:body>
+</html>
+
+NÃO ESQUEÇA DO AJAX FALSE !!!
+
+**************************************************
+1 . No cadastro de avaliação, adicione um botão de Cancelar/Voltar ao lado de "Salvar Avaliação"
+2. E tente construir a visualização da escala de dor de acordo com essa imagem. Escala visual analógica.
+

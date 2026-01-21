@@ -19,16 +19,11 @@
 								value="#{avaliacaoBean.filtroNomePaciente}"
 								placeholder="Nome do paciente..." style="width: 300px;" />
 							<p:commandButton action="#{avaliacaoBean.pesquisar}"
-								icon="pi pi-search" ajax="false"
-								styleClass="ui-button-warning" />
+								icon="pi pi-search" ajax="false" styleClass="ui-button-warning" />
 						</div>
 					</f:facet>
 
 					<f:facet name="right">
-						<p:commandButton value="Nova Avaliação" action="avaliacoes"
-							icon="pi pi-plus" ajax="false" styleClass="ui-button-success"
-							style="margin-right: 5px;" />
-
 						<p:commandButton value="Sair do Módulo" action="irParaHome"
 							icon="pi pi-home" ajax="false" styleClass="ui-button-secondary" />
 					</f:facet>
@@ -36,36 +31,32 @@
 
 				<p:spacer height="20" />
 
-				<p:dataTable id="tabelaAvaliacoes"
-					value="#{avaliacaoBean.listaAvaliacoes}" var="ficha"
+				<p:dataTable id="tabelaPaciente"
+					value="#{avaliacaoBean.listaPacientes}" var="paciente"
 					emptyMessage="Nenhuma avaliação encontrada." rows="10"
 					paginator="true" paginatorPosition="bottom"
 					styleClass="products-table">
 
-					<p:column headerText="Data" sortBy="#{ficha.dataAvaliacao}"
-						style="width: 15%; text-align: center;">
-						<h:outputText value="#{ficha.dataAvaliacao}">
-							<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
-						</h:outputText>
-					</p:column>
-
 					<p:column headerText="Paciente" sortBy="#{ficha.paciente.nome}">
-						<h:outputText value="#{ficha.paciente.nome}" />
+						<h:outputText value="#{paciente.nome}" />
 					</p:column>
 
-					<p:column headerText="Escala de Dor"
-						style="width: 12%; text-align: center;">
-						<p:tag value="#{ficha.escalaDor}"
-							severity="#{ficha.escalaDor le 2 ? 'success' : (ficha.escalaDor le 7 ? 'warning' : 'danger')}" />
+					<p:column headerText="Profissão">
+						<h:outputText value="#{paciente.profissao}" />
+					</p:column>
+
+					<p:column headerText="Data de Nascimento"
+						style="text-align: center; width: 150px;">
+						<h:outputText value="#{paciente.dataNascimento}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
 					</p:column>
 
 					<p:column headerText="Ações"
 						style="width: 10%; text-align: center;">
-						<p:commandButton icon="pi pi-pencil" title="Editar"
-							action="avaliacoes" ajax="false"
-							styleClass="ui-button-rounded ui-button-flat">
-							<f:setPropertyActionListener value="#{ficha}"
-								target="#{avaliacaoBean.avaliacao}" />
+						<p:commandButton icon="pi pi-file-edit" title="Iniciar Avaliação"
+							action="#{avaliacaoBean.iniciarAvaliacao(paciente)}" ajax="false"
+							styleClass="ui-button-warning rounded-button">
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>

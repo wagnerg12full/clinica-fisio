@@ -3,6 +3,8 @@ package com.clinica.controller;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.flow.FlowScoped;
 import javax.inject.Inject;
@@ -12,6 +14,7 @@ import com.clinica.model.FichaAvaliacao;
 import com.clinica.model.Paciente;
 import com.clinica.model.PalpacaoEnum;
 import com.clinica.service.avaliacao.AvaliacaoService;
+import com.clinica.service.paciente.PacienteService;
 
 @Named
 @FlowScoped("avaliacao")
@@ -22,55 +25,62 @@ public class AvaliacaoBean implements Serializable {
 	@Inject
 	private AvaliacaoService service;
 
+	@Inject
+	private PacienteService pacienteService;
+
 	private FichaAvaliacao avaliacao = new FichaAvaliacao();
 
 	private List<FichaAvaliacao> listaAvaliacoes;
+
+	private List<Paciente> listaPacientes;
 
 	private Paciente pacienteSelecionado;
 
 	private String filtroNomePaciente;
 
 	public void pesquisar() {
-		this.listaAvaliacoes = service.listarPorFiltro(filtroNomePaciente);
+		this.listaPacientes = pacienteService.buscarPorNome(filtroNomePaciente);
 	}
 
 	public PalpacaoEnum[] getPalpacoes() {
 		return PalpacaoEnum.values();
 	}
 
-	public String getDescricaoDor() {
-		int dor = avaliacao.getEscalaDor();
-		if (dor <= 2)
-			return "LEVE"; // 0 a 2 [cite: 10]
-		if (dor <= 7)
-			return "MODERADA"; // 3 a 7 [cite: 11]
-		return "INTENSA"; // 8 a 10 [cite: 11]
-	}
-
-	public String getCorDor() {
-		int dor = avaliacao.getEscalaDor();
-		if (dor <= 2)
-			return "#228B22"; // Verde Floresta
-		if (dor <= 7)
-			return "#DAA520"; // Dourado (Amarelo escuro)
-		return "#FF0000"; // Vermelho
-	}
-
+	@PostConstruct
 	public void inicializar() {
 		this.avaliacao = new FichaAvaliacao();
 		this.avaliacao.setDataAvaliacao(new java.util.Date());
-
-		Paciente p = (Paciente) FacesContext.getCurrentInstance().getExternalContext().getFlash()
-				.get("pacienteParaAvaliacao");
-
-		if (p != null) {
-			this.avaliacao.setPaciente(this.pacienteSelecionado);
-		}
 	}
 
 	public String salvar() {
-		service.salvar(avaliacao);
-		return "voltarParaPacientes";
+		try {
+			avaliacao.setPaciente(pacienteSelecionado);
+			service.salvar(avaliacao);
+			reset();
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Avaliação salva com sucesso"));
+			return "avaliacoes";
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro "+e.getMessage(), "Erro ao salvar: " + e.getMessage()));
+			return null;
+		}
+	}
+
+	private void reset() {
+		setFiltroNomePaciente(null);
+		this.listaPacientes = List.of();
+		this.pacienteSelecionado = null;
+	}
+
+	public String cancelar() {
+		reset();
+		return "avaliacao";
+	}
+
+	public String iniciarAvaliacao(Paciente p) {
+		this.pacienteSelecionado = p;
+		return "avaliacoes";
 	}
 
 	// Getters e Setters
@@ -89,6 +99,14 @@ public class AvaliacaoBean implements Serializable {
 
 	public void setListaAvaliacoes(List<FichaAvaliacao> listaAvaliacoes) {
 		this.listaAvaliacoes = listaAvaliacoes;
+	}
+
+	public List<Paciente> getListaPacientes() {
+		return listaPacientes;
+	}
+
+	public void setListaPacientes(List<Paciente> listaPacientes) {
+		this.listaPacientes = listaPacientes;
 	}
 
 	public String getFiltroNomePaciente() {

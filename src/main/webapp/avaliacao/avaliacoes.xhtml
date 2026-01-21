@@ -7,13 +7,16 @@
 
 	<ui:define name="conteudo">
 		<h:form id="formAvaliacao">
+			<p:messages id="messages" closable="true">
+				<p:autoUpdate />
+			</p:messages>
 			<p:panel header="Ficha de Avaliação">
 				<div class="ui-fluid">
 					<p:panelGrid columns="2" layout="grid"
 						columnClasses="ui-grid-col-2, ui-grid-col-10">
 						<p:outputLabel value="Paciente:" style="font-weight: bold;" />
 						<h:outputText id="paciente"
-							value="#{avaliacaoBean.avaliacao.paciente.nome}"
+							value="#{avaliacaoBean.pacienteSelecionado.nome}"
 							style="font-size: 1.2em; color: #2c3e50;" />
 					</p:panelGrid>
 
@@ -95,13 +98,13 @@
 				<f:facet name="footer">
 					<p:commandButton value="Salvar Avaliação"
 						action="#{avaliacaoBean.salvar}" icon="pi pi-save" ajax="false"
-						styleClass="ui-button-primary" />
+						immediate="true" styleClass="ui-button-primary" />
 
 					<p:spacer width="10" />
 
-					<p:commandButton value="Cancelar / Voltar" action="avaliacao"
-						ajax="false" immediate="true" icon="pi pi-times"
-						styleClass="ui-button-secondary" />
+					<p:commandButton value="Cancelar / Voltar"
+						action="#{avaliacaoBean.cancelar}" ajax="false" immediate="true"
+						icon="pi pi-times" styleClass="ui-button-secondary" />
 				</f:facet>
 			</p:panel>
 		</h:form>

@@ -65,11 +65,6 @@ public class PacienteBean implements Serializable {
 		return "pacientes";
 	}
 
-	public String iniciarAvaliacao(Paciente p) {
-		FacesContext.getCurrentInstance().getExternalContext().getFlash().put("pacienteParaAvaliacao", p);
-		return "avaliacao";
-	}
-
 	// --- Getters e Setters ---
 
 	public Paciente getPaciente() {

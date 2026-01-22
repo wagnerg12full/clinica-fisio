@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebFilter(urlPatterns = { "/home.xhtml", "/paciente/*" })
+@WebFilter(urlPatterns = { "/home.xhtml", "/paciente/*", "/avaliacao/*" })
 public class AutorizacaoFilter implements Filter {
 
 	@Override
@@ -23,6 +23,8 @@ public class AutorizacaoFilter implements Filter {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		HttpSession session = httpRequest.getSession(false);
+		httpRequest.setCharacterEncoding("UTF-8");
+		httpResponse.setCharacterEncoding("UTF-8");
 
 		// Verifica se existe a variável "usuarioLogado" que definimos no LoginBean
 		String usuarioLogado = (session != null) ? (String) session.getAttribute("usuarioLogado") : null;

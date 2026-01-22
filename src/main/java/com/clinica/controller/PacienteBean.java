@@ -39,14 +39,13 @@ public class PacienteBean implements Serializable {
 	public String salvar() {
 		try {
 			pacienteService.salvar(getPaciente());
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Paciente salvo com sucesso!"));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+					"Paciente salvo com sucesso!", "Paciente salvo com sucesso!"));
 
-			// Retorna o ID do flow-return definido no XML
 			return "paciente";
 		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro", "Erro ao salvar: " + e.getMessage()));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Erro ao salvar: " + e.getMessage(), "Erro ao salvar: " + e.getMessage()));
 			return null;
 		}
 	}

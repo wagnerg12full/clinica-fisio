@@ -16,10 +16,9 @@
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.format_sql" value="true" />
             <property name="hibernate.hbm2ddl.auto" value="update" />
-            
+            <property name="hibernate.connection.characterEncoding" value="UTF-8" />
             <property name="hibernate.transaction.jta.platform" 
-                      value="org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform" />
-            
+                      value="org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform" />            
             <property name="hibernate.jdbc.lob.non_contextual_creation" value="true" />
         </properties>
     </persistence-unit>

@@ -2,6 +2,7 @@ package com.clinica.controller;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -49,20 +50,20 @@ public class AvaliacaoBean implements Serializable {
 	@PostConstruct
 	public void inicializar() {
 		this.avaliacao = new FichaAvaliacao();
-		this.avaliacao.setDataAvaliacao(new java.util.Date());
 	}
 
 	public String salvar() {
 		try {
 			avaliacao.setPaciente(pacienteSelecionado);
+			avaliacao.setDataAvaliacao(new java.util.Date());
 			service.salvar(avaliacao);
 			reset();
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_INFO, "Sucesso", "Avaliação salva com sucesso"));
-			return "avaliacoes";
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+					"Avaliação salva com sucesso", "Avaliação salva com sucesso."));
+			return "avaliacao";
 		} catch (Exception e) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Erro "+e.getMessage(), "Erro ao salvar: " + e.getMessage()));
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Erro ao salvar: " + e.getMessage(), "Erro ao salvar: " + e.getMessage()));
 			return null;
 		}
 	}
@@ -71,6 +72,7 @@ public class AvaliacaoBean implements Serializable {
 		setFiltroNomePaciente(null);
 		this.listaPacientes = List.of();
 		this.pacienteSelecionado = null;
+		inicializar();
 	}
 
 	public String cancelar() {
@@ -79,6 +81,11 @@ public class AvaliacaoBean implements Serializable {
 	}
 
 	public String iniciarAvaliacao(Paciente p) {
+		if (Objects.isNull(p)) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+					"Paciente não foi selecionado.", "Paciente não foi selecionado."));
+			return null;
+		}
 		this.pacienteSelecionado = p;
 		return "avaliacoes";
 	}

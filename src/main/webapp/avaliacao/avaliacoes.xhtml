@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
@@ -10,7 +11,7 @@
 			<p:messages id="messages" closable="true">
 				<p:autoUpdate />
 			</p:messages>
-			<p:panel header="Ficha de AvaliaÃ§Ã£o">
+			<p:panel header="Ficha de Avaliação">
 				<div class="ui-fluid">
 					<p:panelGrid columns="2" layout="grid"
 						columnClasses="ui-grid-col-2, ui-grid-col-10">
@@ -20,52 +21,54 @@
 							style="font-size: 1.2em; color: #2c3e50;" />
 					</p:panelGrid>
 
-					<p:tabView style="margin-top: 20px;">
-						<p:tab title="HistÃ³rico e DiagnÃ³stico">
-							<p:panelGrid columns="1" layout="grid">
-								<p:outputLabel value="HistÃ³rico Atual (HDA):" />
+					<p:tabView style="margin-top: 20px;" id="tabViewCAdastroAvaliacao">
+						<p:tab title="Histórico e Diagnóstico">
+							<p:panelGrid columns="1" layout="grid"
+								id="pnlHistoricoDiagnostico">
+								<p:outputLabel value="Histórico Atual (HDA):" />
 								<p:inputTextarea value="#{avaliacaoBean.avaliacao.hda}"
-									maxlength="1000" rows="3" />
+									maxlength="1000" rows="3" required="true" id="idHda" />
 
-								<p:outputLabel value="DiagnÃ³stico MÃ©dico:" />
-								<p:inputTextarea
+								<p:outputLabel value="Diagnóstico Médico:" />
+								<p:inputTextarea id="idDiagnosticoMedico"
 									value="#{avaliacaoBean.avaliacao.diagnosticoMedico}"
-									maxlength="1000" rows="3" />
+									maxlength="1000" rows="3" required="true" />
 
 								<h:panelGroup>
-									<p:selectBooleanCheckbox
+									<p:selectBooleanCheckbox id="idSelectProcurouMedico"
 										value="#{avaliacaoBean.avaliacao.procurouOrtopedista}" />
-									<h:outputText value=" Procurou mÃ©dico ortopedista?" />
+									<h:outputText value=" Procurou médico ortopedista?" />
 								</h:panelGroup>
 							</p:panelGrid>
 						</p:tab>
 
 						<p:tab title="Exames e Testes">
-							<p:panelGrid columns="1" layout="grid">
+							<p:panelGrid columns="1" layout="grid" id="pnlExameTestes">
 								<p:outputLabel value="Exames de Imagem:" />
 								<p:inputTextarea value="#{avaliacaoBean.avaliacao.examesImagem}"
-									maxlength="1000" />
-								<p:outputLabel value="Testes FÃ­sicos:" />
+									maxlength="1000" required="true" id="idExamesImagem" />
+								<p:outputLabel value="Testes Físicos:" />
 								<p:inputTextarea
 									value="#{avaliacaoBean.avaliacao.testesFisicos}"
-									maxlength="1000" />
-								<p:outputLabel value="Testes de ForÃ§a:" />
+									maxlength="1000" required="true" id="idTestesFisico" />
+								<p:outputLabel value="Testes de Força:" />
 								<p:inputTextarea value="#{avaliacaoBean.avaliacao.testesForca}"
-									maxlength="1000" />
+									maxlength="1000" required="true" id="idTestesForca" />
 							</p:panelGrid>
 						</p:tab>
 
-						<p:tab title="AvaliaÃ§Ã£o FÃ­sica">
-							<p:panelGrid columns="2" layout="grid"
+						<p:tab title="Avaliação Física">
+							<p:panelGrid columns="2" layout="grid" id="pnlAvaliacaoFisica"
 								columnClasses="ui-grid-col-2, ui-grid-col-10">
-								<p:outputLabel value="PalpaÃ§Ã£o:" />
-								<p:selectOneMenu value="#{avaliacaoBean.avaliacao.palpacao}">
+								<p:outputLabel value="Palpação:" />
+								<p:selectOneMenu value="#{avaliacaoBean.avaliacao.palpacao}"
+									id="idSelectPalpacao" required="true">
 									<f:selectItem itemLabel="Selecione..." itemValue="" />
 									<f:selectItems value="#{avaliacaoBean.palpacoes}" var="p"
 										itemLabel="#{p.toString().replace('_', ' ')}" itemValue="#{p}" />
 								</p:selectOneMenu>
 
-								<p:outputLabel value="Escala Visual AnalÃ³gica de Dor (EVA):" />
+								<p:outputLabel value="Escala Visual Analógica de Dor (EVA):" />
 								<h:panelGroup id="painelDor" layout="block"
 									style="width: 100%; padding: 20px 0;">
 
@@ -77,6 +80,7 @@
 									</div>
 
 									<p:slider for="dorValue" minValue="0" maxValue="10" step="1"
+										id="idEscalaDor"
 										style="height: 15px; background: linear-gradient(to right, #90EE90 0%, #FFFF00 50%, #FF0000 100%); border-radius: 5px;">
 										<p:ajax event="slideEnd" />
 									</p:slider>
@@ -88,7 +92,7 @@
 									</div>
 
 									<h:inputHidden id="dorValue"
-										value="#{avaliacaoBean.avaliacao.escalaDor}" />
+										value="#{avaliacaoBean.avaliacao.escalaDor}" required="true" />
 								</h:panelGroup>
 							</p:panelGrid>
 						</p:tab>
@@ -96,9 +100,9 @@
 				</div>
 
 				<f:facet name="footer">
-					<p:commandButton value="Salvar AvaliaÃ§Ã£o"
+					<p:commandButton value="Salvar Avaliação"
 						action="#{avaliacaoBean.salvar}" icon="pi pi-save" ajax="false"
-						immediate="true" styleClass="ui-button-primary" />
+						styleClass="ui-button-primary" />
 
 					<p:spacer width="10" />
 

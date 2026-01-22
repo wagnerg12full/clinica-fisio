@@ -100,16 +100,44 @@
 				</div>
 
 				<f:facet name="footer">
-					<p:commandButton value="Salvar Avaliação"
-						action="#{avaliacaoBean.salvar}" icon="pi pi-save" ajax="false"
+					<p:commandButton value="Salvar Avaliação" type="button"
+						onclick="PF('confirmSalvar').show()" icon="pi pi-save"
 						styleClass="ui-button-primary" />
 
 					<p:spacer width="10" />
 
-					<p:commandButton value="Cancelar / Voltar"
-						action="#{avaliacaoBean.cancelar}" ajax="false" immediate="true"
-						icon="pi pi-times" styleClass="ui-button-secondary" />
+					<p:commandButton value="Cancelar / Voltar" type="button"
+						onclick="PF('confirmSair').show()" icon="pi pi-times"
+						styleClass="ui-button-secondary" />
 				</f:facet>
+
+				<p:confirmDialog widgetVar="confirmSalvar"
+					header="Confirmar Gravação"
+					message="Deseja salvar as informações desta avaliação?"
+					severity="info" showEffect="fade">
+
+					<p:commandButton value="Sim, Salvar"
+						action="#{avaliacaoBean.salvar}" ajax="false"
+						styleClass="ui-button-primary"
+						oncomplete="PF('confirmSalvar').hide()" />
+
+					<p:commandButton value="Revisar" type="button"
+						onclick="PF('confirmSalvar').hide()"
+						styleClass="ui-button-secondary" />
+				</p:confirmDialog>
+
+				<p:confirmDialog widgetVar="confirmSair" header="Confirmação"
+					message="Deseja realmente cancelar? Os dados não salvos serão perdidos."
+					severity="warn" showEffect="fade">
+
+					<p:commandButton value="Sim, Sair"
+						action="#{avaliacaoBean.cancelar}" ajax="false" immediate="true"
+						styleClass="ui-button-danger" />
+
+					<p:commandButton value="Não, Continuar" type="button"
+						onclick="PF('confirmSair').hide()"
+						styleClass="ui-button-secondary" />
+				</p:confirmDialog>
 			</p:panel>
 		</h:form>
 	</ui:define>

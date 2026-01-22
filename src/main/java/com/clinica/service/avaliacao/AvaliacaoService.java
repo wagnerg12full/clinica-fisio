@@ -2,6 +2,7 @@ package com.clinica.service.avaliacao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -9,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import com.clinica.model.FichaAvaliacao;
+import com.clinica.model.Paciente;
 
 @Stateless
 public class AvaliacaoService {
@@ -46,5 +48,12 @@ public class AvaliacaoService {
 		}
 
 		return query.getResultList();
+	}
+
+	public Optional<FichaAvaliacao> buscarAvaliacaoMaisRecente(Paciente paciente) {
+		List<FichaAvaliacao> lista = em.createQuery(
+				"SELECT f FROM FichaAvaliacao f JOIN FETCH f.paciente p WHERE p.id = :idPaciente ORDER BY f.dataAvaliacao DESC",
+				FichaAvaliacao.class).setParameter("idPaciente", paciente.getId()).getResultList();
+		return lista.isEmpty() ? Optional.empty() : Optional.ofNullable(lista.get(0));
 	}
 }

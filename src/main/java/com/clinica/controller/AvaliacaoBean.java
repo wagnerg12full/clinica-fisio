@@ -3,6 +3,7 @@ package com.clinica.controller;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -22,6 +23,14 @@ import com.clinica.service.paciente.PacienteService;
 public class AvaliacaoBean implements Serializable {
 
 	private static final long serialVersionUID = -3782246311081428880L;
+
+	private static final String PACIENTE_NAO_SELECIONADO = "Paciente não foi selecionado.";
+
+	private static final String PACIENTE_SEM_AVALIACAO = "Não há avaliação para o paciente selecionado.";
+
+	private static final String ERRO_SISTEMA = "Erro ao salvar: ";
+
+	private static final String MSG_SUCESSO = "Avaliação salva com sucesso.";
 
 	@Inject
 	private AvaliacaoService service;
@@ -55,15 +64,17 @@ public class AvaliacaoBean implements Serializable {
 	public String salvar() {
 		try {
 			avaliacao.setPaciente(pacienteSelecionado);
-			avaliacao.setDataAvaliacao(new java.util.Date());
+			if (Objects.isNull(avaliacao.getId())) {
+				avaliacao.setDataAvaliacao(new java.util.Date());
+			}
 			service.salvar(avaliacao);
 			reset();
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
-					"Avaliação salva com sucesso", "Avaliação salva com sucesso."));
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO, MSG_SUCESSO, MSG_SUCESSO));
 			return "avaliacao";
 		} catch (Exception e) {
 			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Erro ao salvar: " + e.getMessage(), "Erro ao salvar: " + e.getMessage()));
+					ERRO_SISTEMA + e.getMessage(), ERRO_SISTEMA + e.getMessage()));
 			return null;
 		}
 	}
@@ -82,12 +93,29 @@ public class AvaliacaoBean implements Serializable {
 
 	public String iniciarAvaliacao(Paciente p) {
 		if (Objects.isNull(p)) {
-			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
-					"Paciente não foi selecionado.", "Paciente não foi selecionado."));
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN, PACIENTE_NAO_SELECIONADO, PACIENTE_NAO_SELECIONADO));
 			return null;
 		}
 		this.pacienteSelecionado = p;
 		return "avaliacoes";
+	}
+
+	public String carregarAvaliacaoAtual(Paciente p) {
+		if (Objects.nonNull(p)) {
+			Optional<FichaAvaliacao> optFicha = service.buscarAvaliacaoMaisRecente(p);
+			if (optFicha.isEmpty()) {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_WARN, PACIENTE_SEM_AVALIACAO, PACIENTE_SEM_AVALIACAO));
+				return null;
+			}
+			this.pacienteSelecionado = p;
+			this.avaliacao = optFicha.get();
+			return "avaliacoes";
+		}
+		FacesContext.getCurrentInstance().addMessage(null,
+				new FacesMessage(FacesMessage.SEVERITY_WARN, PACIENTE_NAO_SELECIONADO, PACIENTE_NAO_SELECIONADO));
+		return null;
 	}
 
 	// Getters e Setters

@@ -22,38 +22,103 @@
 					</p:panelGrid>
 
 					<p:tabView style="margin-top: 20px;" id="tabViewCAdastroAvaliacao">
-						<p:tab title="Histórico e Diagnóstico">
+
+						<p:tab title="Histórico e Características da Dor">
 							<p:panelGrid columns="1" layout="grid"
 								id="pnlHistoricoDiagnostico">
 								<p:outputLabel value="Histórico Atual (HDA):" />
 								<p:inputTextarea value="#{avaliacaoBean.avaliacao.hda}"
-									maxlength="1000" rows="3" required="true" id="idHda" />
+									maxlength="1000" rows="3" id="idHda" />
 
-								<p:outputLabel value="Diagnóstico Médico:" />
-								<p:inputTextarea id="idDiagnosticoMedico"
-									value="#{avaliacaoBean.avaliacao.diagnosticoMedico}"
-									maxlength="1000" rows="3" required="true" />
+								<p:outputLabel value="Classificação da Dor:" />
+								<p:selectOneRadio value="#{avaliacaoBean.avaliacao.tipoDor}"
+									unselectable="true">
+									<f:selectItems value="#{avaliacaoBean.tiposDor}" var="t"
+										itemLabel="#{t.toString()}" itemValue="#{t}" />
+								</p:selectOneRadio>
 
-								<h:panelGroup>
-									<p:selectBooleanCheckbox id="idSelectProcurouMedico"
-										value="#{avaliacaoBean.avaliacao.procurouOrtopedista}" />
-									<h:outputText value=" Procurou médico ortopedista?" />
+								<p:outputLabel value="Patologias Associadas:" />
+								<p:selectManyCheckbox
+									value="#{avaliacaoBean.avaliacao.patologiasAssociadas}"
+									layout="grid" columns="3">
+									<f:selectItems value="#{avaliacaoBean.patologias}" var="pat"
+										itemLabel="#{pat.toString().replace('_', ' ')}"
+										itemValue="#{pat}" />
+								</p:selectManyCheckbox>
+
+								<h:panelGroup id="grpOutraPatologia">
+									<p:outputLabel value="Outra Patologia:" />
+									<p:inputText value="#{avaliacaoBean.avaliacao.outroPatologia}"
+										placeholder="Especifique se marcou 'Outros'..." />
 								</h:panelGroup>
+							</p:panelGrid>
+						</p:tab>
+
+						<p:tab title="Perfil de Saúde e Antecedentes">
+							<p:panelGrid columns="1" layout="grid">
+								<h:panelGroup style="margin-bottom: 10px; display: block;">
+									<p:selectBooleanCheckbox
+										value="#{avaliacaoBean.avaliacao.flagCancerPerdaPeso}" />
+									<h:outputText
+										value=" Teve câncer, perda de peso inexplicável ou febre nos últimos 5 anos?"
+										style="font-weight: bold; margin-left: 5px;" />
+								</h:panelGroup>
+
+								<p:outputLabel
+									value="Descreva os detalhes (se marcou a opção acima):" />
+								<p:inputTextarea
+									value="#{avaliacaoBean.avaliacao.descCancerPerdaPeso}" rows="2"
+									maxlength="1000" />
+
+								<p:separator />
+
+								<p:outputLabel
+									value="Diagnósticos Prévios Recebidos (Médicos, Fisioterapeutas, etc):" />
+								<p:inputTextarea
+									value="#{avaliacaoBean.avaliacao.diagnosticosPreviosRecebidos}"
+									rows="3" maxlength="2000"
+									placeholder="Liste diagnósticos que você já recebeu anteriormente..." />
+
+								<p:outputLabel value="Tratamentos Prévios Principais:" />
+								<p:selectManyCheckbox
+									value="#{avaliacaoBean.avaliacao.tratamentosPrevios}"
+									layout="responsive" columns="3">
+									<f:selectItems value="#{avaliacaoBean.tratamentos}" var="trat"
+										itemLabel="#{trat.toString()}" itemValue="#{trat}" />
+								</p:selectManyCheckbox>
+
+								<p:outputLabel value="Outro Tratamento / Observações:" />
+								<p:inputText value="#{avaliacaoBean.avaliacao.outroTratamento}" />
 							</p:panelGrid>
 						</p:tab>
 
 						<p:tab title="Exames e Testes">
 							<p:panelGrid columns="1" layout="grid" id="pnlExameTestes">
+								<p:outputLabel
+									value="Diagnóstico Médico Atual (Encaminhamento):" />
+								<p:inputTextarea id="idDiagnosticoMedico"
+									value="#{avaliacaoBean.avaliacao.diagnosticoMedico}"
+									maxlength="1000" rows="2" />
+
 								<p:outputLabel value="Exames de Imagem:" />
 								<p:inputTextarea value="#{avaliacaoBean.avaliacao.examesImagem}"
-									maxlength="1000" required="true" id="idExamesImagem" />
+									maxlength="1000" id="idExamesImagem" />
+
 								<p:outputLabel value="Testes Físicos:" />
 								<p:inputTextarea
 									value="#{avaliacaoBean.avaliacao.testesFisicos}"
-									maxlength="1000" required="true" id="idTestesFisico" />
+									maxlength="1000" id="idTestesFisico" />
+
 								<p:outputLabel value="Testes de Força:" />
 								<p:inputTextarea value="#{avaliacaoBean.avaliacao.testesForca}"
-									maxlength="1000" required="true" id="idTestesForca" />
+									maxlength="1000" id="idTestesForca" />
+
+								<h:panelGroup>
+									<p:selectBooleanCheckbox id="idSelectProcurouMedico"
+										value="#{avaliacaoBean.avaliacao.procurouOrtopedista}" />
+									<h:outputText
+										value=" Procurou médico ortopedista para este problema?" />
+								</h:panelGroup>
 							</p:panelGrid>
 						</p:tab>
 
@@ -62,7 +127,7 @@
 								columnClasses="ui-grid-col-2, ui-grid-col-10">
 								<p:outputLabel value="Palpação:" />
 								<p:selectOneMenu value="#{avaliacaoBean.avaliacao.palpacao}"
-									id="idSelectPalpacao" required="true">
+									id="idSelectPalpacao">
 									<f:selectItem itemLabel="Selecione..." itemValue="" />
 									<f:selectItems value="#{avaliacaoBean.palpacoes}" var="p"
 										itemLabel="#{p.toString().replace('_', ' ')}" itemValue="#{p}" />
@@ -71,29 +136,151 @@
 								<p:outputLabel value="Escala Visual Analógica de Dor (EVA):" />
 								<h:panelGroup id="painelDor" layout="block"
 									style="width: 100%; padding: 20px 0;">
-
 									<div
 										style="display: flex; width: 100%; font-weight: bold; font-size: 0.9em; margin-bottom: 5px;">
 										<div style="flex: 2; text-align: center; color: #228B22;">LEVE</div>
 										<div style="flex: 5; text-align: center; color: #DAA520;">MODERADA</div>
 										<div style="flex: 3; text-align: center; color: #FF0000;">INTENSA</div>
 									</div>
-
 									<p:slider for="dorValue" minValue="0" maxValue="10" step="1"
 										id="idEscalaDor"
 										style="height: 15px; background: linear-gradient(to right, #90EE90 0%, #FFFF00 50%, #FF0000 100%); border-radius: 5px;">
 										<p:ajax event="slideEnd" />
 									</p:slider>
-
 									<div
 										style="display: flex; justify-content: space-between; margin-top: 5px; font-weight: bold;">
 										<span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
 										<span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
 									</div>
-
 									<h:inputHidden id="dorValue"
-										value="#{avaliacaoBean.avaliacao.escalaDor}" required="true" />
+										value="#{avaliacaoBean.avaliacao.escalaDor}" />
 								</h:panelGroup>
+							</p:panelGrid>
+						</p:tab>
+
+						<p:tab title="Preditores e Fatores Moduladores">
+							<p:panelGrid columns="1" layout="grid">
+
+								<p:outputLabel
+									value="1. Catastrofização (Pensamentos negativos sobre a dor):" />
+								<h:panelGroup layout="block"
+									style="width: 100%; padding: 15px 0 25px 0;">
+									<div
+										style="display: flex; width: 100%; font-weight: bold; font-size: 0.9em; margin-bottom: 5px;">
+										<div style="flex: 1; text-align: left; color: #228B22;">Nunca
+											faço isso</div>
+										<div style="flex: 1; text-align: right; color: #FF0000;">Sempre
+											faço isso</div>
+									</div>
+									<p:slider for="catastroValue" minValue="0" maxValue="10"
+										step="1"
+										style="height: 15px; background: linear-gradient(to right, #90EE90 0%, #FFFF00 50%, #FF0000 100%); border-radius: 5px;">
+										<p:ajax event="slideEnd" />
+									</p:slider>
+									<div
+										style="display: flex; justify-content: space-between; margin-top: 5px; font-weight: bold;">
+										<span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+										<span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+									</div>
+									<h:inputHidden id="catastroValue"
+										value="#{avaliacaoBean.avaliacao.catastrofizacao}" />
+								</h:panelGroup>
+
+								<p:outputLabel
+									value="2. Estresse (Sentir-se tenso ou sobrecarregado):" />
+								<h:panelGroup layout="block"
+									style="width: 100%; padding: 15px 0 25px 0;">
+									<div
+										style="display: flex; width: 100%; font-weight: bold; font-size: 0.9em; margin-bottom: 5px;">
+										<div style="flex: 1; text-align: left; color: #228B22;">Completamente
+											em desacordo</div>
+										<div style="flex: 1; text-align: right; color: #FF0000;">Concordo
+											completamente</div>
+									</div>
+									<p:slider for="estresseValue" minValue="0" maxValue="10"
+										step="1"
+										style="height: 15px; background: linear-gradient(to right, #90EE90 0%, #FFFF00 50%, #FF0000 100%); border-radius: 5px;">
+										<p:ajax event="slideEnd" />
+									</p:slider>
+									<div
+										style="display: flex; justify-content: space-between; margin-top: 5px; font-weight: bold;">
+										<span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+										<span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+									</div>
+									<h:inputHidden id="estresseValue"
+										value="#{avaliacaoBean.avaliacao.estresse}" />
+								</h:panelGroup>
+
+								<p:outputLabel value="3. Medo de Movimento (Cinesiofobia):" />
+								<h:panelGroup layout="block"
+									style="width: 100%; padding: 15px 0 25px 0;">
+									<div
+										style="display: flex; width: 100%; font-weight: bold; font-size: 0.9em; margin-bottom: 5px;">
+										<div style="flex: 1; text-align: left; color: #228B22;">Completamente
+											em desacordo</div>
+										<div style="flex: 1; text-align: right; color: #FF0000;">Concordo
+											completamente</div>
+									</div>
+									<p:slider for="medoValue" minValue="0" maxValue="10" step="1"
+										style="height: 15px; background: linear-gradient(to right, #90EE90 0%, #FFFF00 50%, #FF0000 100%); border-radius: 5px;">
+										<p:ajax event="slideEnd" />
+									</p:slider>
+									<div
+										style="display: flex; justify-content: space-between; margin-top: 5px; font-weight: bold;">
+										<span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+										<span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+									</div>
+									<h:inputHidden id="medoValue"
+										value="#{avaliacaoBean.avaliacao.medoMovimento}" />
+								</h:panelGroup>
+
+								<p:outputLabel value="4. Ansiedade:" />
+								<h:panelGroup layout="block"
+									style="width: 100%; padding: 15px 0 25px 0;">
+									<div
+										style="display: flex; width: 100%; font-weight: bold; font-size: 0.9em; margin-bottom: 5px;">
+										<div style="flex: 1; text-align: left; color: #228B22;">Nada
+											ansioso</div>
+										<div style="flex: 1; text-align: right; color: #FF0000;">Muito
+											ansioso</div>
+									</div>
+									<p:slider for="ansiedadeValue" minValue="0" maxValue="10"
+										step="1"
+										style="height: 15px; background: linear-gradient(to right, #90EE90 0%, #FFFF00 50%, #FF0000 100%); border-radius: 5px;">
+										<p:ajax event="slideEnd" />
+									</p:slider>
+									<div
+										style="display: flex; justify-content: space-between; margin-top: 5px; font-weight: bold;">
+										<span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+										<span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+									</div>
+									<h:inputHidden id="ansiedadeValue"
+										value="#{avaliacaoBean.avaliacao.ansiedade}" />
+								</h:panelGroup>
+
+								<p:outputLabel value="5. Problemas com o Sono (Última semana):" />
+								<h:panelGroup layout="block"
+									style="width: 100%; padding: 15px 0 25px 0;">
+									<div
+										style="display: flex; width: 100%; font-weight: bold; font-size: 0.85em; margin-bottom: 5px;">
+										<div style="flex: 1; text-align: center; color: #228B22;">Nada</div>
+										<div style="flex: 1; text-align: center; color: #DAA520;">Um
+											pouco</div>
+										<div style="flex: 1; text-align: center; color: #FF8C00;">Alguns</div>
+										<div style="flex: 1; text-align: center; color: #FF0000;">Sério</div>
+									</div>
+									<p:slider for="sonoValue" minValue="0" maxValue="3" step="1"
+										style="height: 15px; background: linear-gradient(to right, #90EE90 0%, #FFFF00 50%, #FF0000 100%); border-radius: 5px;">
+										<p:ajax event="slideEnd" />
+									</p:slider>
+									<div
+										style="display: flex; justify-content: space-between; margin-top: 5px; font-weight: bold; padding: 0 5px;">
+										<span>0</span><span>1</span><span>2</span><span>3</span>
+									</div>
+									<h:inputHidden id="sonoValue"
+										value="#{avaliacaoBean.avaliacao.qualidadeSono}" />
+								</h:panelGroup>
+
 							</p:panelGrid>
 						</p:tab>
 					</p:tabView>

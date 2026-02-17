@@ -1,6 +1,7 @@
 package com.clinica.controller;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -15,6 +16,9 @@ import javax.inject.Named;
 import com.clinica.model.FichaAvaliacao;
 import com.clinica.model.Paciente;
 import com.clinica.model.PalpacaoEnum;
+import com.clinica.model.PatologiaAssociadaEnum;
+import com.clinica.model.TipoDorEnum;
+import com.clinica.model.TratamentoPrevioEnum;
 import com.clinica.service.avaliacao.AvaliacaoService;
 import com.clinica.service.paciente.PacienteService;
 
@@ -56,9 +60,28 @@ public class AvaliacaoBean implements Serializable {
 		return PalpacaoEnum.values();
 	}
 
+	public TipoDorEnum[] getTiposDor() {
+		return TipoDorEnum.values();
+	}
+
+	public PatologiaAssociadaEnum[] getPatologias() {
+		return PatologiaAssociadaEnum.values();
+	}
+
+	public TratamentoPrevioEnum[] getTratamentos() {
+		return TratamentoPrevioEnum.values();
+	}
+
 	@PostConstruct
 	public void inicializar() {
 		this.avaliacao = new FichaAvaliacao();
+		this.avaliacao.setPatologiasAssociadas(new HashSet<>());
+		this.avaliacao.setTratamentosPrevios(new HashSet<>());
+		this.avaliacao.setCatastrofizacao(0);
+	    this.avaliacao.setEstresse(0);
+	    this.avaliacao.setMedoMovimento(0);
+	    this.avaliacao.setAnsiedade(0);
+	    this.avaliacao.setQualidadeSono(0);
 	}
 
 	public String salvar() {
@@ -111,6 +134,19 @@ public class AvaliacaoBean implements Serializable {
 			}
 			this.pacienteSelecionado = p;
 			this.avaliacao = optFicha.get();
+			
+			// Tratamento para registros antigos com campos nulos
+            if (this.avaliacao.getCatastrofizacao() == null) this.avaliacao.setCatastrofizacao(0);
+            if (this.avaliacao.getEstresse() == null) this.avaliacao.setEstresse(0);
+            if (this.avaliacao.getMedoMovimento() == null) this.avaliacao.setMedoMovimento(0);
+            if (this.avaliacao.getAnsiedade() == null) this.avaliacao.setAnsiedade(0);
+            if (this.avaliacao.getQualidadeSono() == null) this.avaliacao.setQualidadeSono(0);
+
+			if (this.avaliacao.getPatologiasAssociadas() == null)
+				this.avaliacao.setPatologiasAssociadas(new HashSet<>());
+			if (this.avaliacao.getTratamentosPrevios() == null)
+				this.avaliacao.setTratamentosPrevios(new HashSet<>());
+
 			return "avaliacoes";
 		}
 		FacesContext.getCurrentInstance().addMessage(null,

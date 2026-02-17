@@ -51,9 +51,12 @@ public class AvaliacaoService {
 	}
 
 	public Optional<FichaAvaliacao> buscarAvaliacaoMaisRecente(Paciente paciente) {
-		List<FichaAvaliacao> lista = em.createQuery(
-				"SELECT f FROM FichaAvaliacao f JOIN FETCH f.paciente p WHERE p.id = :idPaciente ORDER BY f.dataAvaliacao DESC",
-				FichaAvaliacao.class).setParameter("idPaciente", paciente.getId()).getResultList();
+		List<FichaAvaliacao> lista = em
+				.createQuery("SELECT DISTINCT f FROM FichaAvaliacao f LEFT JOIN FETCH f.paciente p "
+						+ "LEFT JOIN FETCH f.patologiasAssociadas LEFT JOIN FETCH f.tratamentosPrevios "
+						+ "WHERE p.id = :idPaciente ORDER BY f.dataAvaliacao DESC", FichaAvaliacao.class)
+				.setParameter("idPaciente", paciente.getId()).getResultList();
+
 		return lista.isEmpty() ? Optional.empty() : Optional.ofNullable(lista.get(0));
 	}
 }

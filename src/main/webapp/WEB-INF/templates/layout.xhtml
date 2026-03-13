@@ -98,13 +98,16 @@ body {
 						rendered="#{!templateBean.menuRecolhido}">
 						<p:submenu label="Navegação">
 							<p:menuitem value="Início (Home)" action="irParaHome"
+								actionListener="#{templateBean.mostrarMenu()}"
 								icon="pi pi-home" ajax="false" />
 						</p:submenu>
 						<p:submenu label="Módulos">
 							<p:menuitem value="Consultar Paciente" action="paciente"
+								actionListener="#{templateBean.esconderMenu()}"
 								icon="pi pi-users" ajax="false" />
-							<p:menuitem value="Avaliação" action="avaliacao"
-								icon="pi pi-file-edit" ajax="false" />
+						<p:menuitem value="Avaliação" action="avaliacao"
+							actionListener="#{templateBean.esconderMenu()}"
+							icon="pi pi-file-edit" ajax="false" />
 						</p:submenu>
 					</p:panelMenu>
 				</h:form>

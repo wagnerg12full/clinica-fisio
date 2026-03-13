@@ -381,6 +381,7 @@
 					showEffect="fade">
 
 					<p:commandButton value="Sim, Sair" action="#{avaliacaoBean.cancelar}" ajax="false" immediate="true"
+						actionListener="#{templateBean.mostrarMenu()}"
 						styleClass="ui-button-danger" />
 
 					<p:commandButton value="Não, Continuar" type="button" onclick="PF('confirmSair').hide()"

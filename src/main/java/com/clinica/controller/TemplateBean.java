@@ -16,6 +16,14 @@ public class TemplateBean implements Serializable {
 		menuRecolhido = !menuRecolhido;
 	}
 
+	public void esconderMenu() {
+		this.menuRecolhido = true;
+	}
+
+	public void mostrarMenu() {
+		this.menuRecolhido = false;
+	}
+
 	public boolean isMenuRecolhido() {
 		return menuRecolhido;
 	}

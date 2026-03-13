@@ -111,6 +111,65 @@ public class FichaAvaliacao implements Serializable {
 	@Column(name = "data_avaliacao", nullable = false)
 	private Date dataAvaliacao; // [cite: 7, 14]
 
+	// --- Tarefa 1: Queixas e Histórico ---
+
+	@Column(name = "dor_noturna", length = 1000)
+	private String dorNoturna;
+
+	@Column(name = "queixas_viscerais", length = 1000)
+	private String queixasViscerais;
+
+	@Column(name = "fatores_agravo", length = 1000)
+	private String fatoresAgravo;
+
+	@Column(name = "fatores_alivio", length = 1000)
+	private String fatoresAlivio;
+
+	@Column(name = "cirurgias", length = 1000)
+	private String cirurgias;
+
+	// --- Tarefa 1: Escala Funcional Específica ---
+
+	@Column(name = "atividade_1_nome", length = 1000)
+	private String atividade1Nome;
+
+	@Column(name = "atividade_1_nota")
+	private Integer atividade1Nota;
+
+	@Column(name = "atividade_2_nome", length = 1000)
+	private String atividade2Nome;
+
+	@Column(name = "atividade_2_nota")
+	private Integer atividade2Nota;
+
+	@Column(name = "atividade_3_nome", length = 1000)
+	private String atividade3Nome;
+
+	@Column(name = "atividade_3_nota")
+	private Integer atividade3Nota;
+
+	// --- Tarefa 1: Achados Clínicos ---
+
+	@ElementCollection(targetClass = AchadosClinicosEnum.class)
+	@CollectionTable(name = "ficha_achados_clinicos", joinColumns = @JoinColumn(name = "ficha_id"))
+	@Enumerated(EnumType.STRING)
+	@Column(name = "achado")
+	private Set<AchadosClinicosEnum> achadosClinicos = new HashSet<>();
+
+	// --- Tarefa 1: Inclinometria e Dinamometria ---
+
+	@Column(name = "inclinometria", length = 1000)
+	private String inclinometria;
+
+	@Column(name = "inclinometria_interpretacao", length = 1000)
+	private String inclinometriaInterpretacao;
+
+	@Column(name = "dinamometria", length = 1000)
+	private String dinamometria;
+
+	@Column(name = "dinamometria_interpretacao", length = 1000)
+	private String dinamometriaInterpretacao;
+
 	public Long getId() {
 		return id;
 	}
@@ -301,6 +360,134 @@ public class FichaAvaliacao implements Serializable {
 
 	public void setDataAvaliacao(Date dataAvaliacao) {
 		this.dataAvaliacao = dataAvaliacao;
+	}
+
+	public String getDorNoturna() {
+		return dorNoturna;
+	}
+
+	public void setDorNoturna(String dorNoturna) {
+		this.dorNoturna = dorNoturna;
+	}
+
+	public String getQueixasViscerais() {
+		return queixasViscerais;
+	}
+
+	public void setQueixasViscerais(String queixasViscerais) {
+		this.queixasViscerais = queixasViscerais;
+	}
+
+	public String getFatoresAgravo() {
+		return fatoresAgravo;
+	}
+
+	public void setFatoresAgravo(String fatoresAgravo) {
+		this.fatoresAgravo = fatoresAgravo;
+	}
+
+	public String getFatoresAlivio() {
+		return fatoresAlivio;
+	}
+
+	public void setFatoresAlivio(String fatoresAlivio) {
+		this.fatoresAlivio = fatoresAlivio;
+	}
+
+	public String getCirurgias() {
+		return cirurgias;
+	}
+
+	public void setCirurgias(String cirurgias) {
+		this.cirurgias = cirurgias;
+	}
+
+	public String getAtividade1Nome() {
+		return atividade1Nome;
+	}
+
+	public void setAtividade1Nome(String atividade1Nome) {
+		this.atividade1Nome = atividade1Nome;
+	}
+
+	public Integer getAtividade1Nota() {
+		return atividade1Nota;
+	}
+
+	public void setAtividade1Nota(Integer atividade1Nota) {
+		this.atividade1Nota = atividade1Nota;
+	}
+
+	public String getAtividade2Nome() {
+		return atividade2Nome;
+	}
+
+	public void setAtividade2Nome(String atividade2Nome) {
+		this.atividade2Nome = atividade2Nome;
+	}
+
+	public Integer getAtividade2Nota() {
+		return atividade2Nota;
+	}
+
+	public void setAtividade2Nota(Integer atividade2Nota) {
+		this.atividade2Nota = atividade2Nota;
+	}
+
+	public String getAtividade3Nome() {
+		return atividade3Nome;
+	}
+
+	public void setAtividade3Nome(String atividade3Nome) {
+		this.atividade3Nome = atividade3Nome;
+	}
+
+	public Integer getAtividade3Nota() {
+		return atividade3Nota;
+	}
+
+	public void setAtividade3Nota(Integer atividade3Nota) {
+		this.atividade3Nota = atividade3Nota;
+	}
+
+	public Set<AchadosClinicosEnum> getAchadosClinicos() {
+		return achadosClinicos;
+	}
+
+	public void setAchadosClinicos(Set<AchadosClinicosEnum> achadosClinicos) {
+		this.achadosClinicos = achadosClinicos;
+	}
+
+	public String getInclinometria() {
+		return inclinometria;
+	}
+
+	public void setInclinometria(String inclinometria) {
+		this.inclinometria = inclinometria;
+	}
+
+	public String getInclinometriaInterpretacao() {
+		return inclinometriaInterpretacao;
+	}
+
+	public void setInclinometriaInterpretacao(String inclinometriaInterpretacao) {
+		this.inclinometriaInterpretacao = inclinometriaInterpretacao;
+	}
+
+	public String getDinamometria() {
+		return dinamometria;
+	}
+
+	public void setDinamometria(String dinamometria) {
+		this.dinamometria = dinamometria;
+	}
+
+	public String getDinamometriaInterpretacao() {
+		return dinamometriaInterpretacao;
+	}
+
+	public void setDinamometriaInterpretacao(String dinamometriaInterpretacao) {
+		this.dinamometriaInterpretacao = dinamometriaInterpretacao;
 	}
 
 }

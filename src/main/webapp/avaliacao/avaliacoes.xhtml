@@ -1,49 +1,40 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui"
-	template="/WEB-INF/templates/layout.xhtml">
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" template="/WEB-INF/templates/layout.xhtml">
 
 	<ui:define name="conteudo">
 		<h:form id="formAvaliacao">
 			<p:messages id="messages" closable="true">
 				<p:autoUpdate />
 			</p:messages>
-			<p:panel header="Ficha de Avaliação">
+			<p:panel header="Ficha de AvaliaÃ§Ã£o">
 				<div class="ui-fluid">
-					<p:panelGrid columns="2" layout="grid"
-						columnClasses="ui-grid-col-2, ui-grid-col-10">
+					<p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-10">
 						<p:outputLabel value="Paciente:" style="font-weight: bold;" />
-						<h:outputText id="paciente"
-							value="#{avaliacaoBean.pacienteSelecionado.nome}"
+						<h:outputText id="paciente" value="#{avaliacaoBean.pacienteSelecionado.nome}"
 							style="font-size: 1.2em; color: #2c3e50;" />
 					</p:panelGrid>
 
 					<p:tabView style="margin-top: 20px;" id="tabViewCAdastroAvaliacao">
 
-						<p:tab title="Histórico e Características da Dor">
-							<p:panelGrid columns="1" layout="grid"
-								id="pnlHistoricoDiagnostico">
-								<p:outputLabel value="Histórico Atual (HDA):" />
-								<p:inputTextarea value="#{avaliacaoBean.avaliacao.hda}"
-									maxlength="1000" rows="3" id="idHda" />
+						<p:tab title="HistÃ³rico e CaracterÃ­sticas da Dor">
+							<p:panelGrid columns="1" layout="grid" id="pnlHistoricoDiagnostico">
+								<p:outputLabel value="HistÃ³rico Atual (HDA):" />
+								<p:inputTextarea value="#{avaliacaoBean.avaliacao.hda}" maxlength="1000" rows="3"
+									id="idHda" />
 
-								<p:outputLabel value="Classificação da Dor:" />
-								<p:selectOneRadio value="#{avaliacaoBean.avaliacao.tipoDor}"
-									unselectable="true">
-									<f:selectItems value="#{avaliacaoBean.tiposDor}" var="t"
-										itemLabel="#{t.toString()}" itemValue="#{t}" />
+								<p:outputLabel value="ClassificaÃ§Ã£o da Dor:" />
+								<p:selectOneRadio value="#{avaliacaoBean.avaliacao.tipoDor}" unselectable="true">
+									<f:selectItems value="#{avaliacaoBean.tiposDor}" var="t" itemLabel="#{t.toString()}"
+										itemValue="#{t}" />
 								</p:selectOneRadio>
 
 								<p:outputLabel value="Patologias Associadas:" />
-								<p:selectManyCheckbox
-									value="#{avaliacaoBean.avaliacao.patologiasAssociadas}"
+								<p:selectManyCheckbox value="#{avaliacaoBean.avaliacao.patologiasAssociadas}"
 									layout="grid" columns="3">
 									<f:selectItems value="#{avaliacaoBean.patologias}" var="pat"
-										itemLabel="#{pat.toString().replace('_', ' ')}"
-										itemValue="#{pat}" />
+										itemLabel="#{pat.toString().replace('_', ' ')}" itemValue="#{pat}" />
 								</p:selectManyCheckbox>
 
 								<h:panelGroup id="grpOutraPatologia">
@@ -54,96 +45,84 @@
 							</p:panelGrid>
 						</p:tab>
 
-						<p:tab title="Perfil de Saúde e Antecedentes">
+						<p:tab title="Perfil de SaÃºde e Antecedentes">
 							<p:panelGrid columns="1" layout="grid">
 								<h:panelGroup style="margin-bottom: 10px; display: block;">
-									<p:selectBooleanCheckbox
-										value="#{avaliacaoBean.avaliacao.flagCancerPerdaPeso}" />
+									<p:selectBooleanCheckbox value="#{avaliacaoBean.avaliacao.flagCancerPerdaPeso}" />
 									<h:outputText
-										value=" Teve câncer, perda de peso inexplicável ou febre nos últimos 5 anos?"
+										value=" Teve cÃ¢ncer, perda de peso inexplicÃ¡vel ou febre nos Ãºltimos 5 anos?"
 										style="font-weight: bold; margin-left: 5px;" />
 								</h:panelGroup>
 
-								<p:outputLabel
-									value="Descreva os detalhes (se marcou a opção acima):" />
-								<p:inputTextarea
-									value="#{avaliacaoBean.avaliacao.descCancerPerdaPeso}" rows="2"
+								<p:outputLabel value="Descreva os detalhes (se marcou a opÃ§Ã£o acima):" />
+								<p:inputTextarea value="#{avaliacaoBean.avaliacao.descCancerPerdaPeso}" rows="2"
 									maxlength="1000" />
 
 								<p:separator />
 
 								<p:outputLabel
-									value="Diagnósticos Prévios Recebidos (Médicos, Fisioterapeutas, etc):" />
-								<p:inputTextarea
-									value="#{avaliacaoBean.avaliacao.diagnosticosPreviosRecebidos}"
+									value="DiagnÃ³sticos PrÃ©vios Recebidos (MÃ©dicos, Fisioterapeutas, etc):" />
+								<p:inputTextarea value="#{avaliacaoBean.avaliacao.diagnosticosPreviosRecebidos}"
 									rows="3" maxlength="2000"
-									placeholder="Liste diagnósticos que você já recebeu anteriormente..." />
+									placeholder="Liste diagnÃ³sticos que vocÃª jÃ¡ recebeu anteriormente..." />
 
-								<p:outputLabel value="Tratamentos Prévios Principais:" />
-								<p:selectManyCheckbox
-									value="#{avaliacaoBean.avaliacao.tratamentosPrevios}"
+								<p:outputLabel value="Tratamentos PrÃ©vios Principais:" />
+								<p:selectManyCheckbox value="#{avaliacaoBean.avaliacao.tratamentosPrevios}"
 									layout="responsive" columns="3">
 									<f:selectItems value="#{avaliacaoBean.tratamentos}" var="trat"
 										itemLabel="#{trat.toString()}" itemValue="#{trat}" />
 								</p:selectManyCheckbox>
 
-								<p:outputLabel value="Outro Tratamento / Observações:" />
+								<p:outputLabel value="Outro Tratamento / ObservaÃ§Ãµes:" />
 								<p:inputText value="#{avaliacaoBean.avaliacao.outroTratamento}" />
 							</p:panelGrid>
 						</p:tab>
 
 						<p:tab title="Exames e Testes">
 							<p:panelGrid columns="1" layout="grid" id="pnlExameTestes">
-								<p:outputLabel
-									value="Diagnóstico Médico Atual (Encaminhamento):" />
+								<p:outputLabel value="DiagnÃ³stico MÃ©dico Atual (Encaminhamento):" />
 								<p:inputTextarea id="idDiagnosticoMedico"
-									value="#{avaliacaoBean.avaliacao.diagnosticoMedico}"
-									maxlength="1000" rows="2" />
+									value="#{avaliacaoBean.avaliacao.diagnosticoMedico}" maxlength="1000" rows="2" />
 
 								<p:outputLabel value="Exames de Imagem:" />
-								<p:inputTextarea value="#{avaliacaoBean.avaliacao.examesImagem}"
-									maxlength="1000" id="idExamesImagem" />
+								<p:inputTextarea value="#{avaliacaoBean.avaliacao.examesImagem}" maxlength="1000"
+									id="idExamesImagem" />
 
-								<p:outputLabel value="Testes Físicos:" />
-								<p:inputTextarea
-									value="#{avaliacaoBean.avaliacao.testesFisicos}"
-									maxlength="1000" id="idTestesFisico" />
+								<p:outputLabel value="Testes FÃ­sicos:" />
+								<p:inputTextarea value="#{avaliacaoBean.avaliacao.testesFisicos}" maxlength="1000"
+									id="idTestesFisico" />
 
-								<p:outputLabel value="Testes de Força:" />
-								<p:inputTextarea value="#{avaliacaoBean.avaliacao.testesForca}"
-									maxlength="1000" id="idTestesForca" />
+								<p:outputLabel value="Testes de ForÃ§a:" />
+								<p:inputTextarea value="#{avaliacaoBean.avaliacao.testesForca}" maxlength="1000"
+									id="idTestesForca" />
 
 								<h:panelGroup>
 									<p:selectBooleanCheckbox id="idSelectProcurouMedico"
 										value="#{avaliacaoBean.avaliacao.procurouOrtopedista}" />
-									<h:outputText
-										value=" Procurou médico ortopedista para este problema?" />
+									<h:outputText value=" Procurou mÃ©dico ortopedista para este problema?" />
 								</h:panelGroup>
 							</p:panelGrid>
 						</p:tab>
 
-						<p:tab title="Avaliação Física">
+						<p:tab title="AvaliaÃ§Ã£o FÃ­sica">
 							<p:panelGrid columns="2" layout="grid" id="pnlAvaliacaoFisica"
 								columnClasses="ui-grid-col-2, ui-grid-col-10">
-								<p:outputLabel value="Palpação:" />
-								<p:selectOneMenu value="#{avaliacaoBean.avaliacao.palpacao}"
-									id="idSelectPalpacao">
+								<p:outputLabel value="PalpaÃ§Ã£o:" />
+								<p:selectOneMenu value="#{avaliacaoBean.avaliacao.palpacao}" id="idSelectPalpacao">
 									<f:selectItem itemLabel="Selecione..." itemValue="" />
 									<f:selectItems value="#{avaliacaoBean.palpacoes}" var="p"
 										itemLabel="#{p.toString().replace('_', ' ')}" itemValue="#{p}" />
 								</p:selectOneMenu>
 
-								<p:outputLabel value="Escala Visual Analógica de Dor (EVA):" />
-								<h:panelGroup id="painelDor" layout="block"
-									style="width: 100%; padding: 20px 0;">
+								<p:outputLabel value="Escala Visual AnalÃ³gica de Dor (EVA):" />
+								<h:panelGroup id="painelDor" layout="block" style="width: 100%; padding: 20px 0;">
 									<div
 										style="display: flex; width: 100%; font-weight: bold; font-size: 0.9em; margin-bottom: 5px;">
 										<div style="flex: 2; text-align: center; color: #228B22;">LEVE</div>
 										<div style="flex: 5; text-align: center; color: #DAA520;">MODERADA</div>
 										<div style="flex: 3; text-align: center; color: #FF0000;">INTENSA</div>
 									</div>
-									<p:slider for="dorValue" minValue="0" maxValue="10" step="1"
-										id="idEscalaDor"
+									<p:slider for="dorValue" minValue="0" maxValue="10" step="1" id="idEscalaDor"
 										style="height: 15px; background: linear-gradient(to right, #90EE90 0%, #FFFF00 50%, #FF0000 100%); border-radius: 5px;">
 										<p:ajax event="slideEnd" />
 									</p:slider>
@@ -152,8 +131,7 @@
 										<span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
 										<span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
 									</div>
-									<h:inputHidden id="dorValue"
-										value="#{avaliacaoBean.avaliacao.escalaDor}" />
+									<h:inputHidden id="dorValue" value="#{avaliacaoBean.avaliacao.escalaDor}" />
 								</h:panelGroup>
 							</p:panelGrid>
 						</p:tab>
@@ -161,19 +139,16 @@
 						<p:tab title="Preditores e Fatores Moduladores">
 							<p:panelGrid columns="1" layout="grid">
 
-								<p:outputLabel
-									value="1. Catastrofização (Pensamentos negativos sobre a dor):" />
-								<h:panelGroup layout="block"
-									style="width: 100%; padding: 15px 0 25px 0;">
+								<p:outputLabel value="1. CatastrofizaÃ§Ã£o (Pensamentos negativos sobre a dor):" />
+								<h:panelGroup layout="block" style="width: 100%; padding: 15px 0 25px 0;">
 									<div
 										style="display: flex; width: 100%; font-weight: bold; font-size: 0.9em; margin-bottom: 5px;">
 										<div style="flex: 1; text-align: left; color: #228B22;">Nunca
-											faço isso</div>
+											faÃ§o isso</div>
 										<div style="flex: 1; text-align: right; color: #FF0000;">Sempre
-											faço isso</div>
+											faÃ§o isso</div>
 									</div>
-									<p:slider for="catastroValue" minValue="0" maxValue="10"
-										step="1"
+									<p:slider for="catastroValue" minValue="0" maxValue="10" step="1"
 										style="height: 15px; background: linear-gradient(to right, #90EE90 0%, #FFFF00 50%, #FF0000 100%); border-radius: 5px;">
 										<p:ajax event="slideEnd" />
 									</p:slider>
@@ -186,10 +161,8 @@
 										value="#{avaliacaoBean.avaliacao.catastrofizacao}" />
 								</h:panelGroup>
 
-								<p:outputLabel
-									value="2. Estresse (Sentir-se tenso ou sobrecarregado):" />
-								<h:panelGroup layout="block"
-									style="width: 100%; padding: 15px 0 25px 0;">
+								<p:outputLabel value="2. Estresse (Sentir-se tenso ou sobrecarregado):" />
+								<h:panelGroup layout="block" style="width: 100%; padding: 15px 0 25px 0;">
 									<div
 										style="display: flex; width: 100%; font-weight: bold; font-size: 0.9em; margin-bottom: 5px;">
 										<div style="flex: 1; text-align: left; color: #228B22;">Completamente
@@ -197,8 +170,7 @@
 										<div style="flex: 1; text-align: right; color: #FF0000;">Concordo
 											completamente</div>
 									</div>
-									<p:slider for="estresseValue" minValue="0" maxValue="10"
-										step="1"
+									<p:slider for="estresseValue" minValue="0" maxValue="10" step="1"
 										style="height: 15px; background: linear-gradient(to right, #90EE90 0%, #FFFF00 50%, #FF0000 100%); border-radius: 5px;">
 										<p:ajax event="slideEnd" />
 									</p:slider>
@@ -207,13 +179,11 @@
 										<span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
 										<span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
 									</div>
-									<h:inputHidden id="estresseValue"
-										value="#{avaliacaoBean.avaliacao.estresse}" />
+									<h:inputHidden id="estresseValue" value="#{avaliacaoBean.avaliacao.estresse}" />
 								</h:panelGroup>
 
 								<p:outputLabel value="3. Medo de Movimento (Cinesiofobia):" />
-								<h:panelGroup layout="block"
-									style="width: 100%; padding: 15px 0 25px 0;">
+								<h:panelGroup layout="block" style="width: 100%; padding: 15px 0 25px 0;">
 									<div
 										style="display: flex; width: 100%; font-weight: bold; font-size: 0.9em; margin-bottom: 5px;">
 										<div style="flex: 1; text-align: left; color: #228B22;">Completamente
@@ -230,13 +200,11 @@
 										<span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
 										<span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
 									</div>
-									<h:inputHidden id="medoValue"
-										value="#{avaliacaoBean.avaliacao.medoMovimento}" />
+									<h:inputHidden id="medoValue" value="#{avaliacaoBean.avaliacao.medoMovimento}" />
 								</h:panelGroup>
 
 								<p:outputLabel value="4. Ansiedade:" />
-								<h:panelGroup layout="block"
-									style="width: 100%; padding: 15px 0 25px 0;">
+								<h:panelGroup layout="block" style="width: 100%; padding: 15px 0 25px 0;">
 									<div
 										style="display: flex; width: 100%; font-weight: bold; font-size: 0.9em; margin-bottom: 5px;">
 										<div style="flex: 1; text-align: left; color: #228B22;">Nada
@@ -244,8 +212,7 @@
 										<div style="flex: 1; text-align: right; color: #FF0000;">Muito
 											ansioso</div>
 									</div>
-									<p:slider for="ansiedadeValue" minValue="0" maxValue="10"
-										step="1"
+									<p:slider for="ansiedadeValue" minValue="0" maxValue="10" step="1"
 										style="height: 15px; background: linear-gradient(to right, #90EE90 0%, #FFFF00 50%, #FF0000 100%); border-radius: 5px;">
 										<p:ajax event="slideEnd" />
 									</p:slider>
@@ -254,20 +221,18 @@
 										<span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
 										<span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
 									</div>
-									<h:inputHidden id="ansiedadeValue"
-										value="#{avaliacaoBean.avaliacao.ansiedade}" />
+									<h:inputHidden id="ansiedadeValue" value="#{avaliacaoBean.avaliacao.ansiedade}" />
 								</h:panelGroup>
 
-								<p:outputLabel value="5. Problemas com o Sono (Última semana):" />
-								<h:panelGroup layout="block"
-									style="width: 100%; padding: 15px 0 25px 0;">
+								<p:outputLabel value="5. Problemas com o Sono (Ãšltima semana):" />
+								<h:panelGroup layout="block" style="width: 100%; padding: 15px 0 25px 0;">
 									<div
 										style="display: flex; width: 100%; font-weight: bold; font-size: 0.85em; margin-bottom: 5px;">
 										<div style="flex: 1; text-align: center; color: #228B22;">Nada</div>
 										<div style="flex: 1; text-align: center; color: #DAA520;">Um
 											pouco</div>
 										<div style="flex: 1; text-align: center; color: #FF8C00;">Alguns</div>
-										<div style="flex: 1; text-align: center; color: #FF0000;">Sério</div>
+										<div style="flex: 1; text-align: center; color: #FF0000;">SÃ©rio</div>
 									</div>
 									<p:slider for="sonoValue" minValue="0" maxValue="3" step="1"
 										style="height: 15px; background: linear-gradient(to right, #90EE90 0%, #FFFF00 50%, #FF0000 100%); border-radius: 5px;">
@@ -277,52 +242,148 @@
 										style="display: flex; justify-content: space-between; margin-top: 5px; font-weight: bold; padding: 0 5px;">
 										<span>0</span><span>1</span><span>2</span><span>3</span>
 									</div>
-									<h:inputHidden id="sonoValue"
-										value="#{avaliacaoBean.avaliacao.qualidadeSono}" />
+									<h:inputHidden id="sonoValue" value="#{avaliacaoBean.avaliacao.qualidadeSono}" />
 								</h:panelGroup>
 
+							</p:panelGrid>
+						</p:tab>
+
+						<p:tab title="Queixas e HistÃ³rico">
+							<p:panelGrid columns="1" layout="grid">
+								<p:outputLabel
+									value="Dor noturna (espontÃ¢nea ou movimento) e ciclo circadiano da dor?" />
+								<p:inputTextarea value="#{avaliacaoBean.avaliacao.dorNoturna}" maxlength="1000"
+									rows="3" />
+
+								<p:outputLabel value="Queixas viscerais?" />
+								<p:inputTextarea value="#{avaliacaoBean.avaliacao.queixasViscerais}" maxlength="1000"
+									rows="3" />
+
+								<p:outputLabel value="O que pode desencadear a dor (fatores de agravo)?" />
+								<p:inputTextarea value="#{avaliacaoBean.avaliacao.fatoresAgravo}" maxlength="1000"
+									rows="3" />
+
+								<p:outputLabel value="O que pode amenizar a dor (fatores de alÃ­vio)?" />
+								<p:inputTextarea value="#{avaliacaoBean.avaliacao.fatoresAlivio}" maxlength="1000"
+									rows="3" />
+
+								<p:outputLabel value="Cirurgias?" />
+								<p:inputTextarea value="#{avaliacaoBean.avaliacao.cirurgias}" maxlength="1000"
+									rows="3" />
+							</p:panelGrid>
+						</p:tab>
+
+						<p:tab title="Escala Funcional e Achados">
+							<p:panelGrid columns="1" layout="grid">
+								<h:panelGroup style="margin-bottom: 10px; display: block;">
+									<h:outputText value="Escala Funcional EspecÃ­fica do Paciente"
+										style="font-weight: bold; font-size: 1.1em; display: block;" />
+									<h:outputText
+										value="Eu vou pedir para vocÃª identificar atÃ© 3 atividades importantes que vocÃª estÃ¡ incapaz de fazer ou tem dificuldade de realizar como resultado do seu problema."
+										style="font-style: italic; display: block; margin-top: 5px;" />
+									<h:outputText
+										value="&quot;Hoje, hÃ¡ alguma atividade que vocÃª estÃ¡ incapaz de fazer ou tem dificuldade de realizar por causa de seu problema?&quot;"
+										style="font-weight: bold; display: block; margin-top: 5px;" />
+								</h:panelGroup>
+
+								<p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-8, ui-grid-col-4">
+									<h:panelGroup>
+										<p:outputLabel value="Atividade 1:" style="font-weight: bold;" />
+										<p:inputText value="#{avaliacaoBean.avaliacao.atividade1Nome}"
+											style="width: 100%;" />
+									</h:panelGroup>
+									<h:panelGroup>
+										<p:outputLabel value="Nota (0-10):" style="font-weight: bold;" />
+										<p:spinner value="#{avaliacaoBean.avaliacao.atividade1Nota}" min="0" max="10"
+											style="width: 100%;" />
+									</h:panelGroup>
+
+									<h:panelGroup>
+										<p:outputLabel value="Atividade 2:" style="font-weight: bold;" />
+										<p:inputText value="#{avaliacaoBean.avaliacao.atividade2Nome}"
+											style="width: 100%;" />
+									</h:panelGroup>
+									<h:panelGroup>
+										<p:outputLabel value="Nota (0-10):" style="font-weight: bold;" />
+										<p:spinner value="#{avaliacaoBean.avaliacao.atividade2Nota}" min="0" max="10"
+											style="width: 100%;" />
+									</h:panelGroup>
+
+									<h:panelGroup>
+										<p:outputLabel value="Atividade 3:" style="font-weight: bold;" />
+										<p:inputText value="#{avaliacaoBean.avaliacao.atividade3Nome}"
+											style="width: 100%;" />
+									</h:panelGroup>
+									<h:panelGroup>
+										<p:outputLabel value="Nota (0-10):" style="font-weight: bold;" />
+										<p:spinner value="#{avaliacaoBean.avaliacao.atividade3Nota}" min="0" max="10"
+											style="width: 100%;" />
+									</h:panelGroup>
+								</p:panelGrid>
+
+								<p:separator />
+
+								<p:outputLabel value="Achados ClÃ­nicos:" style="font-weight: bold;" />
+								<p:selectManyCheckbox value="#{avaliacaoBean.avaliacao.achadosClinicos}" layout="grid"
+									columns="3">
+									<f:selectItems value="#{avaliacaoBean.achadosClinicosValues}" var="achado"
+										itemLabel="#{achado.descricao}" itemValue="#{achado}" />
+								</p:selectManyCheckbox>
+							</p:panelGrid>
+						</p:tab>
+
+						<p:tab title="Inclinometria e Dinamometria">
+							<p:panelGrid columns="1" layout="grid">
+								<p:outputLabel value="Inclinometria:" style="font-weight: bold;" />
+								<p:inputTextarea value="#{avaliacaoBean.avaliacao.inclinometria}" maxlength="1000"
+									rows="3" />
+
+								<p:outputLabel value="InterpretaÃ§Ã£o (Inclinometria):" style="font-weight: bold;" />
+								<p:inputTextarea value="#{avaliacaoBean.avaliacao.inclinometriaInterpretacao}"
+									maxlength="1000" rows="3" />
+
+								<p:separator />
+
+								<p:outputLabel value="Dinamometria:" style="font-weight: bold;" />
+								<p:inputTextarea value="#{avaliacaoBean.avaliacao.dinamometria}" maxlength="1000"
+									rows="3" />
+
+								<p:outputLabel value="InterpretaÃ§Ã£o (Dinamometria):" style="font-weight: bold;" />
+								<p:inputTextarea value="#{avaliacaoBean.avaliacao.dinamometriaInterpretacao}"
+									maxlength="1000" rows="3" />
 							</p:panelGrid>
 						</p:tab>
 					</p:tabView>
 				</div>
 
 				<f:facet name="footer">
-					<p:commandButton value="Salvar Avaliação" type="button"
-						onclick="PF('confirmSalvar').show()" icon="pi pi-save"
-						styleClass="ui-button-primary" />
+					<p:commandButton value="Salvar AvaliaÃ§Ã£o" type="button" onclick="PF('confirmSalvar').show()"
+						icon="pi pi-save" styleClass="ui-button-primary" />
 
 					<p:spacer width="10" />
 
-					<p:commandButton value="Cancelar / Voltar" type="button"
-						onclick="PF('confirmSair').show()" icon="pi pi-times"
-						styleClass="ui-button-secondary" />
+					<p:commandButton value="Cancelar / Voltar" type="button" onclick="PF('confirmSair').show()"
+						icon="pi pi-times" styleClass="ui-button-secondary" />
 				</f:facet>
 
-				<p:confirmDialog widgetVar="confirmSalvar"
-					header="Confirmar Gravação"
-					message="Deseja salvar as informações desta avaliação?"
-					severity="info" showEffect="fade">
+				<p:confirmDialog widgetVar="confirmSalvar" header="Confirmar GravaÃ§Ã£o"
+					message="Deseja salvar as informaÃ§Ãµes desta avaliaÃ§Ã£o?" severity="info" showEffect="fade">
 
-					<p:commandButton value="Sim, Salvar"
-						action="#{avaliacaoBean.salvar}" ajax="false"
-						styleClass="ui-button-primary"
-						oncomplete="PF('confirmSalvar').hide()" />
+					<p:commandButton value="Sim, Salvar" action="#{avaliacaoBean.salvar}" ajax="false"
+						styleClass="ui-button-primary" oncomplete="PF('confirmSalvar').hide()" />
 
-					<p:commandButton value="Revisar" type="button"
-						onclick="PF('confirmSalvar').hide()"
+					<p:commandButton value="Revisar" type="button" onclick="PF('confirmSalvar').hide()"
 						styleClass="ui-button-secondary" />
 				</p:confirmDialog>
 
-				<p:confirmDialog widgetVar="confirmSair" header="Confirmação"
-					message="Deseja realmente cancelar? Os dados não salvos serão perdidos."
-					severity="warn" showEffect="fade">
+				<p:confirmDialog widgetVar="confirmSair" header="ConfirmaÃ§Ã£o"
+					message="Deseja realmente cancelar? Os dados nÃ£o salvos serÃ£o perdidos." severity="warn"
+					showEffect="fade">
 
-					<p:commandButton value="Sim, Sair"
-						action="#{avaliacaoBean.cancelar}" ajax="false" immediate="true"
+					<p:commandButton value="Sim, Sair" action="#{avaliacaoBean.cancelar}" ajax="false" immediate="true"
 						styleClass="ui-button-danger" />
 
-					<p:commandButton value="Não, Continuar" type="button"
-						onclick="PF('confirmSair').hide()"
+					<p:commandButton value="NÃ£o, Continuar" type="button" onclick="PF('confirmSair').hide()"
 						styleClass="ui-button-secondary" />
 				</p:confirmDialog>
 			</p:panel>

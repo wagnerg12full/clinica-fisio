@@ -11,3 +11,4 @@ Fisioterapeutas que necessitam de uma interface rápida, segura e visualmente or
 - **Ficha de Avaliação Multidimensional**: Coleta de HDA, Exames, Testes Físicos e Palpação.
 - **Métricas Visuais (Preditores)**: Escalas visuais (0-10) para Dor, Catastrofização, Estresse, Medo de Movimento e Ansiedade, além da Escala de Sono (0-3).
 - **Persistência Histórica**: Recuperação da avaliação mais recente para comparação e edição.
+- **Otimização de Espaço**: A interface deve ser dinâmica, ocultando elementos de navegação global (menu lateral) durante a execução de tarefas críticas (preenchimento de fichas) para reduzir a carga cognitiva e aumentar a área útil.

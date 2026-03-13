@@ -54,6 +54,7 @@ public class AvaliacaoService {
 		List<FichaAvaliacao> lista = em
 				.createQuery("SELECT DISTINCT f FROM FichaAvaliacao f LEFT JOIN FETCH f.paciente p "
 						+ "LEFT JOIN FETCH f.patologiasAssociadas LEFT JOIN FETCH f.tratamentosPrevios "
+						+ "LEFT JOIN FETCH f.achadosClinicos "
 						+ "WHERE p.id = :idPaciente ORDER BY f.dataAvaliacao DESC", FichaAvaliacao.class)
 				.setParameter("idPaciente", paciente.getId()).getResultList();
 

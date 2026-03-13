@@ -13,6 +13,7 @@ import javax.faces.flow.FlowScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import com.clinica.model.AchadosClinicosEnum;
 import com.clinica.model.FichaAvaliacao;
 import com.clinica.model.Paciente;
 import com.clinica.model.PalpacaoEnum;
@@ -72,16 +73,24 @@ public class AvaliacaoBean implements Serializable {
 		return TratamentoPrevioEnum.values();
 	}
 
+	public AchadosClinicosEnum[] getAchadosClinicosValues() {
+		return AchadosClinicosEnum.values();
+	}
+
 	@PostConstruct
 	public void inicializar() {
 		this.avaliacao = new FichaAvaliacao();
 		this.avaliacao.setPatologiasAssociadas(new HashSet<>());
 		this.avaliacao.setTratamentosPrevios(new HashSet<>());
+		this.avaliacao.setAchadosClinicos(new HashSet<>());
 		this.avaliacao.setCatastrofizacao(0);
-	    this.avaliacao.setEstresse(0);
-	    this.avaliacao.setMedoMovimento(0);
-	    this.avaliacao.setAnsiedade(0);
-	    this.avaliacao.setQualidadeSono(0);
+		this.avaliacao.setEstresse(0);
+		this.avaliacao.setMedoMovimento(0);
+		this.avaliacao.setAnsiedade(0);
+		this.avaliacao.setQualidadeSono(0);
+		this.avaliacao.setAtividade1Nota(0);
+		this.avaliacao.setAtividade2Nota(0);
+		this.avaliacao.setAtividade3Nota(0);
 	}
 
 	public String salvar() {
@@ -134,18 +143,28 @@ public class AvaliacaoBean implements Serializable {
 			}
 			this.pacienteSelecionado = p;
 			this.avaliacao = optFicha.get();
-			
-			// Tratamento para registros antigos com campos nulos
-            if (this.avaliacao.getCatastrofizacao() == null) this.avaliacao.setCatastrofizacao(0);
-            if (this.avaliacao.getEstresse() == null) this.avaliacao.setEstresse(0);
-            if (this.avaliacao.getMedoMovimento() == null) this.avaliacao.setMedoMovimento(0);
-            if (this.avaliacao.getAnsiedade() == null) this.avaliacao.setAnsiedade(0);
-            if (this.avaliacao.getQualidadeSono() == null) this.avaliacao.setQualidadeSono(0);
 
-			if (this.avaliacao.getPatologiasAssociadas() == null)
-				this.avaliacao.setPatologiasAssociadas(new HashSet<>());
-			if (this.avaliacao.getTratamentosPrevios() == null)
-				this.avaliacao.setTratamentosPrevios(new HashSet<>());
+			// Tratamento para registros antigos com campos nulos
+			if (this.avaliacao.getCatastrofizacao() == null)
+				this.avaliacao.setCatastrofizacao(0);
+			if (this.avaliacao.getEstresse() == null)
+				this.avaliacao.setEstresse(0);
+			if (this.avaliacao.getMedoMovimento() == null)
+				this.avaliacao.setMedoMovimento(0);
+			if (this.avaliacao.getAnsiedade() == null)
+				this.avaliacao.setAnsiedade(0);
+			if (this.avaliacao.getQualidadeSono() == null)
+				this.avaliacao.setQualidadeSono(0);
+			if (this.avaliacao.getAtividade1Nota() == null)
+				this.avaliacao.setAtividade1Nota(0);
+			if (this.avaliacao.getAtividade2Nota() == null)
+				this.avaliacao.setAtividade2Nota(0);
+			if (this.avaliacao.getAtividade3Nota() == null)
+				this.avaliacao.setAtividade3Nota(0);
+
+			this.avaliacao.setAchadosClinicos(new HashSet<>(this.avaliacao.getAchadosClinicos()));
+			this.avaliacao.setPatologiasAssociadas(new HashSet<>(this.avaliacao.getPatologiasAssociadas()));
+			this.avaliacao.setTratamentosPrevios(new HashSet<>(this.avaliacao.getTratamentosPrevios()));
 
 			return "avaliacoes";
 		}

@@ -170,6 +170,14 @@ public class FichaAvaliacao implements Serializable {
 	@Column(name = "dinamometria_interpretacao", length = 1000)
 	private String dinamometriaInterpretacao;
 
+	// --- Tarefa 2: Nova Aba "Diagnóstico e Ações" ---
+	
+	@Column(name = "diagnostico_cinesio_funcional", length = 1000)
+	private String diagnosticoCinesioFuncional;
+	
+	@Column(name = "conduta_fisioterapeutica", length = 1000)
+	private String condutaFisioterapeutica;
+
 	public Long getId() {
 		return id;
 	}
@@ -488,6 +496,22 @@ public class FichaAvaliacao implements Serializable {
 
 	public void setDinamometriaInterpretacao(String dinamometriaInterpretacao) {
 		this.dinamometriaInterpretacao = dinamometriaInterpretacao;
+	}
+
+	public String getDiagnosticoCinesioFuncional() {
+		return diagnosticoCinesioFuncional;
+	}
+
+	public void setDiagnosticoCinesioFuncional(String diagnosticoCinesioFuncional) {
+		this.diagnosticoCinesioFuncional = diagnosticoCinesioFuncional;
+	}
+
+	public String getCondutaFisioterapeutica() {
+		return condutaFisioterapeutica;
+	}
+
+	public void setCondutaFisioterapeutica(String condutaFisioterapeutica) {
+		this.condutaFisioterapeutica = condutaFisioterapeutica;
 	}
 
 }

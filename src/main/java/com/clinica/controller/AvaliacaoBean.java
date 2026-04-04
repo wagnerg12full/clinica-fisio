@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import com.clinica.model.AchadosClinicosEnum;
+import com.clinica.model.EvolucaoPaciente;
 import com.clinica.model.FichaAvaliacao;
 import com.clinica.model.Paciente;
 import com.clinica.model.PalpacaoEnum;
@@ -21,6 +22,7 @@ import com.clinica.model.PatologiaAssociadaEnum;
 import com.clinica.model.TipoDorEnum;
 import com.clinica.model.TratamentoPrevioEnum;
 import com.clinica.service.avaliacao.AvaliacaoService;
+import com.clinica.service.evolucao.EvolucaoService;
 import com.clinica.service.paciente.PacienteService;
 
 @Named

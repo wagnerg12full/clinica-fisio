@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/layout.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="formEvolucao">
+			<p:messages id="messages" closable="true">
+				<p:autoUpdate />
+			</p:messages>
+			
+			<p:panel header="Evolução do Paciente">
+				<div class="ui-fluid">
+					<!-- Informações do paciente -->
+					<p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-10">
+						<p:outputLabel value="Paciente:" style="font-weight: bold;" />
+						<h:outputText id="paciente" value="#{avaliacaoBean.pacienteSelecionado.nome}"
+							style="font-size: 1.2em; color: #2c3e50;" />
+						
+						<p:outputLabel value="Última Avaliação:" style="font-weight: bold;" />
+						<h:outputText value="#{avaliacaoBean.avaliacao.dataAvaliacao}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+						</h:outputText>
+					</p:panelGrid>
+					
+					<p:separator />
+					
+					<!-- Formulário para nova evolução -->
+					<p:panel header="Registrar Nova Evolução" style="margin-top: 20px;">
+						<p:panelGrid columns="1" layout="grid">
+							<p:outputLabel value="Descrição da Evolução:" style="font-weight: bold;" />
+							<p:inputTextarea value="#{avaliacaoBean.novaEvolucao.descricao}" 
+								rows="5" maxlength="1000" style="width: 100%;"
+								placeholder="Descreva a evolução do paciente, progressos, alterações no quadro clínico, etc..." />
+							
+							<p:outputLabel value="Data do Registro:" style="font-weight: bold;" />
+							<h:outputText value="#{avaliacaoBean.novaEvolucao.dataRegistro}">
+								<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+							</h:outputText>
+						</p:panelGrid>
+						
+						<f:facet name="footer">
+							<p:commandButton value="Registrar Evolução" 
+								action="#{avaliacaoBean.registrarEvolucao}"
+								icon="pi pi-save" styleClass="ui-button-primary" />
+							
+							<p:spacer width="10" />
+							
+							<p:commandButton value="Cancelar" 
+								action="#{avaliacaoBean.voltarParaAvaliacao}"
+								icon="pi pi-arrow-left" styleClass="ui-button-secondary" />
+						</f:facet>
+					</p:panel>
+					
+					<!-- Lista de evoluções anteriores -->
+					<p:panel header="Histórico de Evoluções" style="margin-top: 30px;">
+						<p:dataTable id="tabelaEvolucoes" 
+							value="#{avaliacaoBean.listaEvolucoes}" 
+							var="evolucao"
+							emptyMessage="Nenhuma evolução registrada."
+							rows="5"
+							paginator="true"
+							paginatorPosition="bottom">
+							
+							<p:column headerText="Data" style="width: 150px;">
+								<h:outputText value="#{evolucao.dataRegistro}">
+									<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+								</h:outputText>
+							</p:column>
+							
+							<p:column headerText="Descrição">
+								<h:outputText value="#{evolucao.descricao}" />
+							</p:column>
+							
+							<p:column headerText="Ações" style="width: 100px; text-align: center;">
+								<p:commandButton icon="pi pi-trash" title="Remover"
+									onclick="PF('confirmRemover').show()"
+									styleClass="ui-button-danger rounded-button">
+									<f:setPropertyActionListener value="#{evolucao}" 
+										target="#{avaliacaoBean.novaEvolucao}" />
+								</p:commandButton>
+							</p:column>
+						</p:dataTable>
+					</p:panel>
+				</div>
+			</p:panel>
+			
+			<!-- Diálogo de confirmação para remover evolução -->
+			<p:confirmDialog widgetVar="confirmRemover" header="Confirmar Remoção"
+				message="Deseja realmente remover esta evolução?" severity="warn"
+				showEffect="fade">
+				
+				<p:commandButton value="Sim, Remover" 
+					action="#{avaliacaoBean.removerEvolucao}"
+					oncomplete="PF('confirmRemover').hide()"
+					styleClass="ui-button-danger" />
+				
+				<p:commandButton value="Cancelar" type="button" 
+					onclick="PF('confirmRemover').hide()"
+					styleClass="ui-button-secondary" />
+			</p:confirmDialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

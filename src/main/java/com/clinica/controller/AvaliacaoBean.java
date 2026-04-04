@@ -39,11 +39,16 @@ public class AvaliacaoBean implements Serializable {
 
 	private static final String MSG_SUCESSO = "Avaliação salva com sucesso.";
 
+	private static final String MSG_SUCESSO_EVOLUCAO = "Evolução registrada com sucesso.";
+
 	@Inject
 	private AvaliacaoService service;
 
 	@Inject
 	private PacienteService pacienteService;
+
+	@Inject
+	private EvolucaoService evolucaoService;
 
 	private FichaAvaliacao avaliacao = new FichaAvaliacao();
 
@@ -54,6 +59,10 @@ public class AvaliacaoBean implements Serializable {
 	private Paciente pacienteSelecionado;
 
 	private String filtroNomePaciente;
+
+	// Atributos para evolução do paciente
+	private EvolucaoPaciente novaEvolucao = new EvolucaoPaciente();
+	private List<EvolucaoPaciente> listaEvolucoes;
 
 	public void pesquisar() {
 		this.listaPacientes = pacienteService.buscarPorNome(filtroNomePaciente);
@@ -175,46 +184,115 @@ public class AvaliacaoBean implements Serializable {
 		return null;
 	}
 
-	// Getters e Setters
-	public FichaAvaliacao getAvaliacao() {
-		return avaliacao;
+	// Métodos para evolução do paciente
+	public String iniciarEvolucao(Paciente paciente) {
+		if (Objects.isNull(paciente)) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN, PACIENTE_NAO_SELECIONADO, PACIENTE_NAO_SELECIONADO));
+			return null;
+		}
+		
+		this.pacienteSelecionado = paciente;
+		
+		// Carrega a avaliação mais recente do paciente
+		Optional<FichaAvaliacao> optFicha = service.buscarAvaliacaoMaisRecente(paciente);
+		if (optFicha.isEmpty()) {
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_WARN, 
+					"Paciente não possui avaliação. É necessário criar uma avaliação primeiro.", 
+					"Paciente não possui avaliação. É necessário criar uma avaliação primeiro."));
+			return null;
+		}
+		
+		this.avaliacao = optFicha.get();
+		this.novaEvolucao = new EvolucaoPaciente();
+		this.novaEvolucao.setAvaliacao(this.avaliacao);
+		
+		// Carrega as evoluções existentes
+		this.listaEvolucoes = evolucaoService.listarPorAvaliacao(this.avaliacao);
+		
+		return "evolucao";
+	}
+	
+	public String registrarEvolucao() {
+		try {
+			if (Objects.isNull(novaEvolucao.getDescricao()) || novaEvolucao.getDescricao().trim().isEmpty()) {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, 
+						"Descrição da evolução é obrigatória.", 
+						"Descrição da evolução é obrigatória."));
+				return null;
+			}
+			
+			evolucaoService.salvar(novaEvolucao);
+			
+			// Atualiza a lista de evoluções
+			this.listaEvolucoes = evolucaoService.listarPorAvaliacao(this.avaliacao);
+			
+			// Limpa o formulário para nova entrada
+			this.novaEvolucao = new EvolucaoPaciente();
+			this.novaEvolucao.setAvaliacao(this.avaliacao);
+			
+			FacesContext.getCurrentInstance().addMessage(null,
+					new FacesMessage(FacesMessage.SEVERITY_INFO, MSG_SUCESSO_EVOLUCAO, MSG_SUCESSO_EVOLUCAO));
+			
+			return null; // Permanece na mesma página
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					ERRO_SISTEMA + e.getMessage(), ERRO_SISTEMA + e.getMessage()));
+			return null;
+		}
+	}
+	
+	public String removerEvolucao() {
+		try {
+			if (Objects.nonNull(novaEvolucao) && Objects.nonNull(novaEvolucao.getId())) {
+				evolucaoService.remover(novaEvolucao);
+				
+				// Atualiza a lista de evoluções
+				this.listaEvolucoes = evolucaoService.listarPorAvaliacao(this.avaliacao);
+				
+				// Limpa o objeto
+				this.novaEvolucao = new EvolucaoPaciente();
+				this.novaEvolucao.setAvaliacao(this.avaliacao);
+				
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO, 
+						"Evolução removida com sucesso.", 
+						"Evolução removida com sucesso."));
+			}
+			return null;
+		} catch (Exception e) {
+			FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Erro ao remover evolução: " + e.getMessage(), 
+					"Erro ao remover evolução: " + e.getMessage()));
+			return null;
+		}
+	}
+	
+	public String voltarParaAvaliacao() {
+		this.pacienteSelecionado = null;
+		this.avaliacao = null;
+		this.novaEvolucao = null;
+		this.listaEvolucoes = null;
+		return "avaliacao";
+	}
+	
+	// Getters e Setters para evolução
+	public EvolucaoPaciente getNovaEvolucao() {
+		return novaEvolucao;
 	}
 
-	public void setAvaliacao(FichaAvaliacao avaliacao) {
-		this.avaliacao = avaliacao;
+	public void setNovaEvolucao(EvolucaoPaciente novaEvolucao) {
+		this.novaEvolucao = novaEvolucao;
 	}
 
-	// Getters e Setters
-	public List<FichaAvaliacao> getListaAvaliacoes() {
-		return listaAvaliacoes;
+	public List<EvolucaoPaciente> getListaEvolucoes() {
+		return listaEvolucoes;
 	}
 
-	public void setListaAvaliacoes(List<FichaAvaliacao> listaAvaliacoes) {
-		this.listaAvaliacoes = listaAvaliacoes;
-	}
-
-	public List<Paciente> getListaPacientes() {
-		return listaPacientes;
-	}
-
-	public void setListaPacientes(List<Paciente> listaPacientes) {
-		this.listaPacientes = listaPacientes;
-	}
-
-	public String getFiltroNomePaciente() {
-		return filtroNomePaciente;
-	}
-
-	public void setFiltroNomePaciente(String filtroNomePaciente) {
-		this.filtroNomePaciente = filtroNomePaciente;
-	}
-
-	public Paciente getPacienteSelecionado() {
-		return pacienteSelecionado;
-	}
-
-	public void setPacienteSelecionado(Paciente pacienteSelecionado) {
-		this.pacienteSelecionado = pacienteSelecionado;
+	public void setListaEvolucoes(List<EvolucaoPaciente> listaEvolucoes) {
+		this.listaEvolucoes = listaEvolucoes;
 	}
 
 }

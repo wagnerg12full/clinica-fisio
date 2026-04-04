@@ -353,6 +353,18 @@
 									maxlength="1000" rows="3" />
 							</p:panelGrid>
 						</p:tab>
+
+						<p:tab title="Diagnóstico e Ações">
+							<p:panelGrid columns="1" layout="grid">
+								<p:outputLabel value="Diagnóstico Cinésio Funcional:" />
+								<p:inputTextarea value="#{avaliacaoBean.avaliacao.diagnosticoCinesioFuncional}"
+									maxlength="1000" rows="3" />
+
+								<p:outputLabel value="Conduta Fisioterapêutica:" />
+								<p:inputTextarea value="#{avaliacaoBean.avaliacao.condutaFisioterapeutica}"
+									maxlength="1000" rows="3" />
+							</p:panelGrid>
+						</p:tab>
 					</p:tabView>
 				</div>
 

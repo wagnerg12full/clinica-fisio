@@ -57,17 +57,23 @@
 					</p:column>
 
 					<p:column headerText="Ações"
-						style="width: 10%; text-align: center;">
+						style="width: 15%; text-align: center;">
 						<p:commandButton icon="pi pi-plus-circle"
 							title="Iniciar Avaliação"
 							action="#{avaliacaoBean.iniciarAvaliacao(paciente)}" ajax="false"
 							styleClass="ui-button-warning rounded-button">
 						</p:commandButton>
-						<p:spacer width="10" />
+						<p:spacer width="5" />
 						<p:commandButton icon="pi pi-pencil"
 							title="Ver/Editar Última Avaliação"
 							action="#{avaliacaoBean.carregarAvaliacaoAtual(paciente)}"
 							ajax="false" styleClass="ui-button-info rounded-button">
+						</p:commandButton>
+						<p:spacer width="5" />
+						<p:commandButton icon="pi pi-history"
+							title="Registrar/Ver Evolução"
+							action="#{avaliacaoBean.iniciarEvolucao(paciente)}"
+							ajax="false" styleClass="ui-button-success rounded-button">
 						</p:commandButton>
 					</p:column>
 				</p:dataTable>

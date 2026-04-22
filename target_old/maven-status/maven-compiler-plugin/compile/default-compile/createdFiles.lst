@@ -1,0 +1,8 @@
+com/clinica/model/TratamentoPrevioEnum.class
+com/clinica/model/AchadosClinicosEnum.class
+com/clinica/model/FichaAvaliacao.class
+com/clinica/model/PalpacaoEnum.class
+com/clinica/model/TipoDorEnum.class
+com/clinica/service/email/EmailService.class
+com/clinica/model/Paciente.class
+com/clinica/model/PatologiaAssociadaEnum.class

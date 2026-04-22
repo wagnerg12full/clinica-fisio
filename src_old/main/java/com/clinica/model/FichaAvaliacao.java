@@ -29,37 +29,37 @@ public class FichaAvaliacao implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(optional = false)
+	@ManyToOne(optional = false) // Paciente obrigatório [cite: 7, 8]
 	@JoinColumn(name = "paciente_id")
 	private Paciente paciente;
 
 	@Column(length = 1000)
-	private String hda;
+	private String hda; // [cite: 2]
 
 	@Column(name = "procurou_ortopedista")
-	private boolean procurouOrtopedista;
+	private boolean procurouOrtopedista; // [cite: 3]
 
 	@Column(length = 1000)
 	private String diagnosticoMedico;
 
 	@Column(length = 1000)
-	private String examesImagem;
+	private String examesImagem; // [cite: 4]
 
 	@Column(length = 1000)
 	private String testesFisicos;
 
 	@Column(length = 1000)
-	private String testesForca;
+	private String testesForca; // [cite: 5]
 
 	@Enumerated(EnumType.STRING)
-	private PalpacaoEnum palpacao;
+	private PalpacaoEnum palpacao; // [cite: 5]
 
 	@Column(name = "escala_dor")
-	private int escalaDor;
+	private int escalaDor; // [cite: 6]
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "tipo_dor")
-	private TipoDorEnum tipoDor;
+	private TipoDorEnum tipoDor; // Aguda ou Crônica
 
 	@ElementCollection(targetClass = PatologiaAssociadaEnum.class)
 	@CollectionTable(name = "ficha_patologias", joinColumns = @JoinColumn(name = "ficha_id"))
@@ -68,16 +68,16 @@ public class FichaAvaliacao implements Serializable {
 	private Set<PatologiaAssociadaEnum> patologiasAssociadas = new HashSet<>();
 
 	@Column(name = "outro_patologia")
-	private String outroPatologia;
+	private String outroPatologia; // Para o campo de texto ao lado de "Outros"
 
 	@Column(name = "flag_cancer_perda_peso")
-	private Boolean flagCancerPerdaPeso;
+	private Boolean flagCancerPerdaPeso; // Teve câncer, perda de peso ou febre?
 
 	@Column(name = "desc_cancer_perda_peso")
-	private String descCancerPerdaPeso;
+	private String descCancerPerdaPeso; // Descrição para o "Descreva:"
 
 	@Column(length = 2000, name = "diagnosticos_previos")
-	private String diagnosticosPreviosRecebidos;
+	private String diagnosticosPreviosRecebidos; // Área de texto grande da imagem
 
 	@ElementCollection(targetClass = TratamentoPrevioEnum.class)
 	@CollectionTable(name = "ficha_tratamentos", joinColumns = @JoinColumn(name = "ficha_id"))
@@ -86,26 +86,32 @@ public class FichaAvaliacao implements Serializable {
 	private Set<TratamentoPrevioEnum> tratamentosPrevios = new HashSet<>();
 
 	@Column(name = "outro_tratamento")
-	private String outroTratamento;
+	private String outroTratamento; // Para o campo de texto ao lado de "Outros"
+
+	// --- Novos Preditores de Dor (Padrão EVA 0-10) ---
 
 	@Column(name = "catastrofizacao")
-	private Integer catastrofizacao;
+	private Integer catastrofizacao; // 0 (Nunca) a 10 (Sempre)
 
 	@Column(name = "estresse")
-	private Integer estresse;
+	private Integer estresse; // 0 (Discordo) a 10 (Concordo)
 
 	@Column(name = "medo_movimento")
-	private Integer medoMovimento;
+	private Integer medoMovimento; // 0 (Discordo) a 10 (Concordo)
 
 	@Column(name = "ansiedade")
-	private Integer ansiedade;
+	private Integer ansiedade; // 0 (Nada) a 10 (Muito)
+
+	// --- Qualidade do Sono (Escala 0-3) ---
 
 	@Column(name = "qualidade_sono")
-	private Integer qualidadeSono;
+	private Integer qualidadeSono; // 0 (Nada) a 3 (Sério)
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "data_avaliacao", nullable = false)
-	private Date dataAvaliacao;
+	private Date dataAvaliacao; // [cite: 7, 14]
+
+	// --- Tarefa 1: Queixas e Histórico ---
 
 	@Column(name = "dor_noturna", length = 1000)
 	private String dorNoturna;
@@ -121,6 +127,8 @@ public class FichaAvaliacao implements Serializable {
 
 	@Column(name = "cirurgias", length = 1000)
 	private String cirurgias;
+
+	// --- Tarefa 1: Escala Funcional Específica ---
 
 	@Column(name = "atividade_1_nome", length = 1000)
 	private String atividade1Nome;
@@ -140,11 +148,15 @@ public class FichaAvaliacao implements Serializable {
 	@Column(name = "atividade_3_nota")
 	private Integer atividade3Nota;
 
+	// --- Tarefa 1: Achados Clínicos ---
+
 	@ElementCollection(targetClass = AchadosClinicosEnum.class)
 	@CollectionTable(name = "ficha_achados_clinicos", joinColumns = @JoinColumn(name = "ficha_id"))
 	@Enumerated(EnumType.STRING)
 	@Column(name = "achado")
 	private Set<AchadosClinicosEnum> achadosClinicos = new HashSet<>();
+
+	// --- Tarefa 1: Inclinometria e Dinamometria ---
 
 	@Column(name = "inclinometria", length = 1000)
 	private String inclinometria;
@@ -158,6 +170,8 @@ public class FichaAvaliacao implements Serializable {
 	@Column(name = "dinamometria_interpretacao", length = 1000)
 	private String dinamometriaInterpretacao;
 
+	// --- Tarefa 2: Nova Aba "Diagnóstico e Ações" ---
+	
 	@Column(name = "diagnostico_cinesio_funcional", length = 1000)
 	private String diagnosticoCinesioFuncional;
 	
@@ -308,6 +322,10 @@ public class FichaAvaliacao implements Serializable {
 		this.outroTratamento = outroTratamento;
 	}
 
+	public Date getDataAvaliacao() {
+		return dataAvaliacao;
+	}
+
 	public Integer getCatastrofizacao() {
 		return catastrofizacao;
 	}
@@ -346,10 +364,6 @@ public class FichaAvaliacao implements Serializable {
 
 	public void setQualidadeSono(Integer qualidadeSono) {
 		this.qualidadeSono = qualidadeSono;
-	}
-
-	public Date getDataAvaliacao() {
-		return dataAvaliacao;
 	}
 
 	public void setDataAvaliacao(Date dataAvaliacao) {
@@ -499,4 +513,5 @@ public class FichaAvaliacao implements Serializable {
 	public void setCondutaFisioterapeutica(String condutaFisioterapeutica) {
 		this.condutaFisioterapeutica = condutaFisioterapeutica;
 	}
+
 }

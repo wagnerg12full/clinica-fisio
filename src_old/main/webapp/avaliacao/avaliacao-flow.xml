@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+
+    <flow-definition id="avaliacao">
+    
+    	<start-node>avaliacao</start-node>
+        
+        <view-node id="avaliacao">
+            <vdl-document>/avaliacao/avaliacao.xhtml</vdl-document>
+        </view-node>
+        
+        <view-node id="avaliacoes">
+            <vdl-document>/avaliacao/avaliacoes.xhtml</vdl-document>
+        </view-node>
+        
+        <flow-return id="voltarHome">
+            <from-outcome>/home.xhtml</from-outcome>
+        </flow-return>
+        
+        <initializer>#{avaliacaoBean.inicializar()}</initializer>
+        
+    </flow-definition>
+
+</faces-config>

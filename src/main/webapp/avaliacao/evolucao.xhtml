@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/layout.xhtml">
+
+	<ui:define name="conteudo">
+		<h:form id="formEvolucao">
+			<p:messages id="messages" closable="true">
+				<p:autoUpdate />
+			</p:messages>
+
+			<p:panel header="Registro de Evolução do Paciente">
+				<div class="ui-fluid">
+					<p:panelGrid columns="2" layout="grid" columnClasses="ui-grid-col-2, ui-grid-col-10">
+						<p:outputLabel value="Paciente:" style="font-weight: bold;" />
+						<h:outputText value="#{avaliacaoBean.pacienteSelecionado.nome}" style="font-size: 1.2em;" />
+						
+						<p:outputLabel value="Data da Avaliação Base:" />
+						<h:outputText value="#{avaliacaoBean.avaliacao.dataAvaliacao}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+						</h:outputText>
+					</p:panelGrid>
+
+					<p:separator style="margin: 20px 0;" />
+
+					<div style="margin-bottom: 20px;">
+						<p:outputLabel value="Descrição da Evolução:" for="idDescEvolucao" style="font-weight: bold; display: block; margin-bottom: 5px;" />
+						<p:inputTextarea id="idDescEvolucao" value="#{avaliacaoBean.novaEvolucao.descricao}"
+							maxlength="1000" rows="5" placeholder="Descreva o atendimento, conduta realizada e evolução do paciente..." 
+							required="true" requiredMessage="A descrição da evolução é obrigatória." />
+					</div>
+
+					<p:panel header="Histórico de Evoluções" styleClass="card">
+						<p:dataTable id="tabelaEvolucoes" value="#{avaliacaoBean.listaEvolucoes}" var="evol"
+							emptyMessage="Nenhuma evolução registrada para esta avaliação." rows="10"
+							paginator="true" paginatorPosition="bottom" style="margin-top: 10px;">
+							
+							<p:column headerText="Data/Hora" style="width: 180px; text-align: center;" sortBy="#{evol.dataRegistro}">
+								<h:outputText value="#{evol.dataRegistro}">
+									<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+								</h:outputText>
+							</p:column>
+							
+							<p:column headerText="Descrição de Atendimento">
+								<h:outputText value="#{evol.descricao}" style="white-space: pre-wrap;" />
+							</p:column>
+						</p:dataTable>
+					</p:panel>
+				</div>
+
+				<f:facet name="footer">
+					<p:commandButton value="Confirmar" type="button" onclick="PF('confirmRegistrar').show()"
+						icon="pi pi-check" styleClass="ui-button-primary" />
+					
+					<p:spacer width="10" />
+					
+					<p:commandButton value="Cancelar / Voltar" type="button" onclick="PF('confirmCancelar').show()"
+						icon="pi pi-times" styleClass="ui-button-secondary" />
+				</f:facet>
+
+				<!-- Diálogos de confirmação -->
+				<p:confirmDialog widgetVar="confirmRegistrar" header="Confirmar Registro"
+					message="Deseja salvar esta evolução?" severity="info" showEffect="fade">
+					<p:commandButton value="Sim, Salvar" action="#{avaliacaoBean.registrarEvolucao}" ajax="false"
+						styleClass="ui-button-primary" oncomplete="PF('confirmRegistrar').hide()" />
+					<p:commandButton value="Revisar" type="button" onclick="PF('confirmRegistrar').hide()"
+						styleClass="ui-button-secondary" />
+				</p:confirmDialog>
+
+				<p:confirmDialog widgetVar="confirmCancelar" header="Confirmar Cancelamento"
+					message="Deseja realmente voltar? Dados não salvos serão perdidos." severity="warn" showEffect="fade">
+					<p:commandButton value="Sim, Sair" action="#{avaliacaoBean.voltarParaAvaliacao}" ajax="false" immediate="true"
+						styleClass="ui-button-danger" />
+					<p:commandButton value="Não, Continuar" type="button" onclick="PF('confirmCancelar').hide()"
+						styleClass="ui-button-secondary" />
+				</p:confirmDialog>
+			</p:panel>
+		</h:form>
+	</ui:define>
+</ui:composition>

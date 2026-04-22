@@ -20,7 +20,6 @@
             <property name="hibernate.transaction.jta.platform" 
                       value="org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform" />            
             <property name="hibernate.jdbc.lob.non_contextual_creation" value="true" />
-            <property name="hibernate.jdbc.time_zone" value="America/Fortaleza"/>
         </properties>
     </persistence-unit>
 </persistence>
